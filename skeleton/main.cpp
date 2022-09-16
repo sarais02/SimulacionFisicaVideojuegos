@@ -8,6 +8,8 @@
 #include "RenderUtils.hpp"
 #include "callbacks.hpp"
 
+#include "Particle.h"
+
 #include <iostream>
 
 
@@ -28,9 +30,13 @@ PxPvd*                  gPvd        = NULL;
 PxDefaultCpuDispatcher*	gDispatcher = NULL;
 PxScene*				gScene      = NULL;
 ContactReportCallback gContactReportCallback;
+Particle* particle = NULL;
+
 
 
 // Initialize physics engine
+// Se define todo lo que queremos que aparezca en la escena
+// Reglas del mundo fisico
 void initPhysics(bool interactive)
 {
 	PX_UNUSED(interactive);
@@ -43,7 +49,7 @@ void initPhysics(bool interactive)
 
 	gPhysics = PxCreatePhysics(PX_PHYSICS_VERSION, *gFoundation, PxTolerancesScale(),true,gPvd);
 
-	gMaterial = gPhysics->createMaterial(0.5f, 0.5f, 0.6f);
+	gMaterial = gPhysics->createMaterial(0.5f, 0.5f, 0.6f); //Crear material del suelo
 
 	// For Solid Rigids +++++++++++++++++++++++++++++++++++++
 	PxSceneDesc sceneDesc(gPhysics->getTolerancesScale());
@@ -53,22 +59,28 @@ void initPhysics(bool interactive)
 	sceneDesc.filterShader = contactReportFilterShader;
 	sceneDesc.simulationEventCallback = &gContactReportCallback;
 	gScene = gPhysics->createScene(sceneDesc);
-	}
+
+	particle = new Particle(Vector3(0.0,0.0,0), Vector3(5.0,5.0,0.0));
+}
 
 
 // Function to configure what happens in each step of physics
 // interactive: true if the game is rendering, false if it offline
 // t: time passed since last call in milliseconds
+// Definir lo que pasa en cada frame 
 void stepPhysics(bool interactive, double t)
 {
 	PX_UNUSED(interactive);
 
 	gScene->simulate(t);
 	gScene->fetchResults(true);
+
+	particle->integrate(t);
 }
 
 // Function to clean data
 // Add custom code to the begining of the function
+// Evita memory leaks
 void cleanupPhysics(bool interactive)
 {
 	PX_UNUSED(interactive);
@@ -83,7 +95,9 @@ void cleanupPhysics(bool interactive)
 	transport->release();
 	
 	gFoundation->release();
-	}
+
+	delete particle; particle = nullptr;
+}
 
 // Function called when a key is pressed
 void keyPress(unsigned char key, const PxTransform& camera)

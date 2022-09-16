@@ -51,10 +51,10 @@ public:
 	}
 
 public:
-	physx::PxShape* shape;
-	const physx::PxTransform* transform;
+	physx::PxShape* shape; //Forma geometrica
+	const physx::PxTransform* transform; //Posicion y orientacion
 	const physx::PxRigidActor* actor;
-	Vector4 color;
+	Vector4 color; //Color {R, G, B, Alpha}
 
 	unsigned references;
 };
@@ -62,6 +62,6 @@ public:
 double GetLastTime();
 Camera* GetCamera();
 
-physx::PxShape* CreateShape(const physx::PxGeometry& geo);
+physx::PxShape* CreateShape(const physx::PxGeometry& geo); //Para crear formas de geometria: PxSphereGeometry, PxBoxGeometry, PxCapsuleGeometry
 
 #endif
