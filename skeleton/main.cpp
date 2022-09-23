@@ -9,6 +9,7 @@
 #include "callbacks.hpp"
 
 #include "Particle.h"
+#include "Proyectil.h"
 
 #include <iostream>
 
@@ -32,7 +33,7 @@ PxScene*				gScene      = NULL;
 ContactReportCallback gContactReportCallback;
 Particle* particle = NULL;
 
-
+vector<Particle*>proyectiles;
 
 // Initialize physics engine
 // Se define todo lo que queremos que aparezca en la escena
@@ -60,7 +61,7 @@ void initPhysics(bool interactive)
 	sceneDesc.simulationEventCallback = &gContactReportCallback;
 	gScene = gPhysics->createScene(sceneDesc);
 
-	particle = new Particle(Vector3(0.0,20.0,0), Vector3(5.0,15.0,0.0), Vector3(0.0, -9.8, 0.0));
+	//particle = new Particle(Vector3(0.0,20.0,0), Vector3(5.0,15.0,0.0), Vector3(0.0, -9.8, 0.0));
 }
 
 
@@ -75,7 +76,14 @@ void stepPhysics(bool interactive, double t)
 	gScene->simulate(t);
 	gScene->fetchResults(true);
 
-	particle->integrate(t);
+	for (auto shot:proyectiles)
+	{
+		if(shot!=nullptr)
+			shot->integrate(t);
+		//if (shot->pos.y < 0.0f || shot->startTime + 5000 < GetLastFrame() || shot->particle.getPosition().z > 200.0f) {
+	}
+	/*if(particle!=nullptr)
+		particle->integrate(t);*/
 }
 
 // Function to clean data
@@ -97,6 +105,13 @@ void cleanupPhysics(bool interactive)
 	gFoundation->release();
 
 	delete particle; particle = nullptr;
+	for (auto shot : proyectiles)
+	{
+		if (shot != nullptr) {
+			delete shot;
+			shot = nullptr;
+		}
+	}
 }
 
 // Function called when a key is pressed
@@ -110,6 +125,33 @@ void keyPress(unsigned char key, const PxTransform& camera)
 	//case ' ':	break;
 	case ' ':
 	{
+		break;
+	}
+	case 'G': //Artillero
+	{
+		auto bullet=new Proyectil(camera.p, GetCamera()->getDir()*30);
+		bullet->setAcceleration(Vector3(0.0, -20.0, 0.0));
+		bullet->setDamping(0.99);
+		bullet->setMass(200.0);
+		proyectiles.push_back(bullet);
+		break;
+	}
+	case 'H': //Bola de fuego
+	{
+		auto bullet = new Proyectil(camera.p, GetCamera()->getDir() * 30, Vector4(255 / 250.0, 128 / 250.0, 0.0, 1.0));
+		bullet->setAcceleration(Vector3(0.0, 0.6, 0.0));
+		bullet->setDamping(0.9);
+		bullet->setMass(1.0);
+		proyectiles.push_back(bullet);
+		break;
+	}
+	case 'F': //Laser
+	{
+		auto bullet = new Proyectil(camera.p, GetCamera()->getDir() * 30, Vector4(135/250.0, 206 / 250.0, 250 / 250.0, 1.0));
+		bullet->setAcceleration(Vector3(0.0, 0.0, 0.0));
+		bullet->setDamping(0.99);
+		bullet->setMass(0.1);
+		proyectiles.push_back(bullet);
 		break;
 	}
 	default:
