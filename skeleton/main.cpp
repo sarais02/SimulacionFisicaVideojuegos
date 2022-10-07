@@ -10,6 +10,7 @@
 
 #include "Particle.h"
 #include "Proyectil.h"
+#include "ParticleSystem.h"
 
 #include <iostream>
 
@@ -34,7 +35,8 @@ ContactReportCallback gContactReportCallback;
 Particle* particle = NULL;
 
 vector<Particle*>proyectiles;
-
+//CREAR PARTICLE SYSTEM
+ParticleSystem* particleSystem;
 // Initialize physics engine
 // Se define todo lo que queremos que aparezca en la escena
 // Reglas del mundo fisico
@@ -60,7 +62,7 @@ void initPhysics(bool interactive)
 	sceneDesc.filterShader = contactReportFilterShader;
 	sceneDesc.simulationEventCallback = &gContactReportCallback;
 	gScene = gPhysics->createScene(sceneDesc);
-
+	particleSystem = new ParticleSystem();
 	//particle = new Particle(Vector3(0.0,20.0,0), Vector3(5.0,15.0,0.0), Vector3(0.0, -9.8, 0.0));
 }
 
@@ -82,6 +84,7 @@ void stepPhysics(bool interactive, double t)
 			shot->integrate(t);
 		//if (shot->pos.y < 0.0f || shot->startTime + 5000 < GetLastFrame() || shot->particle.getPosition().z > 200.0f) {
 	}
+	particleSystem->update(t);
 	/*if(particle!=nullptr)
 		particle->integrate(t);*/
 }
@@ -112,6 +115,7 @@ void cleanupPhysics(bool interactive)
 			shot = nullptr;
 		}
 	}
+	delete particleSystem;
 }
 
 // Function called when a key is pressed
