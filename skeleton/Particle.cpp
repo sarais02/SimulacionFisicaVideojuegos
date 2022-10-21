@@ -1,22 +1,16 @@
 #include "Particle.h"
 
-Particle::Particle(Vector3 Pos, Vector3 Vel): vel(Vel), pos(Pos)
+
+Particle::Particle(Vector3 Pos, Vector3 Vel, Vector4 c, Vector3 a_, double dam, double size) : vel(Vel), pos(Pos), isFire_(false),
+																								color(c), a(a_), damping(dam), size_(size)
 {
-	renderitem = make_unique<RenderItem>(CreateShape(physx::PxSphereGeometry(1.0)), &pos, Vector4(1.0, 0.0, 0.0, 1.0));
-}
-Particle::Particle(Vector3 Pos, Vector3 Vel, Vector4 c) : vel(Vel), pos(Pos), color(c)
-{
-	renderitem = make_unique<RenderItem>(CreateShape(physx::PxSphereGeometry(1.0)), &pos, c);
+	renderitem = new RenderItem(CreateShape(physx::PxSphereGeometry(size_)), &pos, c);
 }
 
-Particle::Particle(Vector3 Pos, Vector3 Vel, Vector3 a_, double dam): vel(Vel), pos(Pos), a(a_), damping(dam)
-{
-	renderitem = make_unique<RenderItem>(CreateShape(physx::PxSphereGeometry(1.0)), &pos, Vector4(1.0, 0.0, 0.0, 1.0));
-}
 
 Particle::~Particle()
 {
-	renderitem.release(); renderitem = nullptr;
+	DeregisterRenderItem(renderitem);
 }
 
 void Particle::integrate(double t)
@@ -24,4 +18,12 @@ void Particle::integrate(double t)
 	pos.p += vel * t;
 	vel += a*t;
 	vel *= powf(damping, t);
+}
+
+void Particle::changeSize(double s, physx::PxTransform *pos, Vector4 c) {
+	//renderitem->shape->getGeometry().sphere().radius = s;
+	//renderitem->shape->setGeometry(physx::PxSphereGeometry(s));
+	DeregisterRenderItem(renderitem);
+	
+	renderitem = new RenderItem(CreateShape(physx::PxSphereGeometry(s)), pos, c);
 }

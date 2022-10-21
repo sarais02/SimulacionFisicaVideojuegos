@@ -7,17 +7,19 @@ using namespace std;
 class GausianParticleGen: public ParticleGenerator
 {
 public:
-	GausianParticleGen(Vector3 desTip_vel, Vector3 desTip_pos);
+	GausianParticleGen(Vector3 desTip_vel, Vector3 desTip_pos, double desTip_t_, string name_);
 	~GausianParticleGen();
 
 	void generteParticle(list<Particle*>& l) override;
-
+	void increaseDesTipPos(Vector3 increase);
+	void increaseDesTipVel(Vector3 increase);
+	
 private:
 	//Cuanto más, más ancho es el camino
 	Vector3 desTip_vel;
 	Vector3 desTip_pos;
-	Particle molde;
+	double desTip_t;
 	normal_distribution<double>d{ 0,1 };
-
-	void setMolde();
+	random_device r;
+	default_random_engine gnd;
 };

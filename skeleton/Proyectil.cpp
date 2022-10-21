@@ -9,6 +9,6 @@ Proyectil::Proyectil(Vector3 Pos, Vector3 Vel) :Particle(Pos, Vel) {
 Proyectil::Proyectil(Vector3 Pos, Vector3 Vel, Vector4 COLOR) :Particle(Pos, Vel, COLOR) {
 	setType(Particle::type::PROYECTIL);
 }
-Proyectil::Proyectil(Vector3 Pos, Vector3 Vel, Vector3 acceleration, double Damping) : Particle(Pos, Vel, acceleration, Damping) {
+Proyectil::Proyectil(Vector3 Pos, Vector3 Vel, Vector4 COLOR, Vector3 acceleration, double Damping) : Particle(Pos, Vel, COLOR, acceleration, Damping) {
 	setType(Particle::type::PROYECTIL);
 }

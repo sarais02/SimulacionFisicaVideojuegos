@@ -11,13 +11,14 @@ class Particle
 public:
 
 	Particle() {};
-	Particle(Vector3 Pos, Vector3 Vel);
-	Particle(Vector3 Pos, Vector3 Vel, Vector4 c);
-	Particle(Vector3 Pos, Vector3 Vel, Vector3 a, double dam);
-
+	Particle(Vector3 Pos, Vector3 Vel, Vector4 c=Vector4(1.0, 1.0, 1.0, 1.0), Vector3 a=Vector3(0.0, -9.8, 0.0), double dam=0.999, double size=1.0);
+	
 	~Particle();
+	//virtual Particle* clone() const;
 
 	void integrate(double t); //Actualiza posicion
+
+	void changeSize(double s, physx::PxTransform *pos, Vector4 c);
 	inline void setVelocity(Vector3 Vel) {
 		vel = Vel;
 	}
@@ -29,6 +30,9 @@ public:
 	}
 	inline Vector3 getPosition() {
 		return pos.p;
+	}
+	inline physx::PxTransform* getTransform() {
+		return &pos;
 	}
 	inline void setMass(double mass_) {
 		mass = mass_;
@@ -70,18 +74,31 @@ public:
 	inline Vector4 getColor() {
 		return color;
 	}
+	inline void setSize(double t) {
+		size_ = t;
+	}
+	inline double getSize() {
+		return size_;
+	}
+	inline bool isFire() {
+		return isFire_;
+	}
+	inline void setIsFire(bool f) {
+		isFire_ = f;
+	}
 
 private:
 
-	Vector3 vel;
-	Vector3 a;
+	Vector3 vel, a;
 	Vector4 color;
 	physx::PxTransform pos;
-	unique_ptr<RenderItem>renderitem;
+	//unique_ptr<RenderItem>renderitem;
+	RenderItem *renderitem;
 	double damping;
 	double mass;
 	type type_;
 	double timeAlive;
-
+	double size_;
+	bool isFire_;
 };
 

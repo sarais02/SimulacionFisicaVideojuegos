@@ -15,7 +15,12 @@ public:
 	//llama al metodo create del generador de particulas, al integrate de cada particula
 	void update(double t);
 
-	ParticleGenerator getGenName();
+	ParticleGenerator* getParticleGen(string name);
+	void generateFireworkSystem();
+	void generateHosepipeSystem();
+	void generateFogSystem();
+	void generateFlamesSystem();
+	void increaseDesTip(Vector3 increase);
 
 protected:
 	Vector3 bounds_max;

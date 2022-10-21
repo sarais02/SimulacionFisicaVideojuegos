@@ -158,6 +158,21 @@ void keyPress(unsigned char key, const PxTransform& camera)
 		proyectiles.push_back(bullet);
 		break;
 	}
+	case 'M':
+		particleSystem->generateHosepipeSystem();
+		break;
+	case 'N':
+		particleSystem->generateFogSystem();
+		break;
+	case 'L':
+		particleSystem->generateFlamesSystem();
+		break;
+	case '+':
+		particleSystem->increaseDesTip(Vector3(1.0, 1.0, 0.0));
+		break;
+	case '-':
+		particleSystem->increaseDesTip(Vector3(-1.0, -1.0, 0.0));
+		break;
 	default:
 		break;
 	}
