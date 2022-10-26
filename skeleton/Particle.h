@@ -7,18 +7,18 @@ using namespace std;
 
 class Particle
 {
-
 public:
 
 	Particle() {};
 	Particle(Vector3 Pos, Vector3 Vel, Vector4 c=Vector4(1.0, 1.0, 1.0, 1.0), Vector3 a=Vector3(0.0, -9.8, 0.0), double dam=0.999, double size=1.0);
 	
 	~Particle();
-	//virtual Particle* clone() const;
-
+	
 	void integrate(double t); //Actualiza posicion
-
+	virtual bool update(double t);
 	void changeSize(double s, physx::PxTransform *pos, Vector4 c);
+	virtual Particle* clone()const;
+
 	inline void setVelocity(Vector3 Vel) {
 		vel = Vel;
 	}
@@ -58,12 +58,14 @@ public:
 	}
 
 	inline void setTimeAlive(double t) {
-		timeAlive = t;
+		iniTimeAlive=timeAlive = t;
 	}
 	inline double getTimeAlive() {
 		return timeAlive;
 	}
-
+	inline double getIniTimeAlive() {
+		return iniTimeAlive;
+	}
 	inline bool isAlive(double t) {
 		timeAlive -= t;
 		return timeAlive > 0;
@@ -87,7 +89,7 @@ public:
 		isFire_ = f;
 	}
 
-private:
+protected:
 
 	Vector3 vel, a;
 	Vector4 color;
@@ -97,7 +99,7 @@ private:
 	double damping;
 	double mass;
 	type type_;
-	double timeAlive;
+	double timeAlive, iniTimeAlive;
 	double size_;
 	bool isFire_;
 };

@@ -63,6 +63,7 @@ void initPhysics(bool interactive)
 	sceneDesc.simulationEventCallback = &gContactReportCallback;
 	gScene = gPhysics->createScene(sceneDesc);
 	particleSystem = new ParticleSystem();
+	srand(time(NULL));
 	//particle = new Particle(Vector3(0.0,20.0,0), Vector3(5.0,15.0,0.0), Vector3(0.0, -9.8, 0.0));
 }
 
@@ -166,6 +167,13 @@ void keyPress(unsigned char key, const PxTransform& camera)
 		break;
 	case 'L':
 		particleSystem->generateFlamesSystem();
+		break;
+	case 'Q':
+		//particleSystem->shootFirework(Firework::LINEAR);
+		particleSystem->shootFirework(Firework::CIRCULAR);
+		break;
+	case 'C':
+		particleSystem->generateCircleSystem();
 		break;
 	case '+':
 		particleSystem->increaseDesTip(Vector3(1.0, 1.0, 0.0));

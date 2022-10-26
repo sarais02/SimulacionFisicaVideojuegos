@@ -12,7 +12,7 @@ GausianParticleGen::GausianParticleGen(Vector3 desTip_vel_, Vector3 desTip_pos_,
 	active = true;
 }
 
- void GausianParticleGen::generteParticle(list<Particle*>& l) {
+ void GausianParticleGen::generateParticle(list<Particle*>& l) {
 	
 	 for (int i = 0; i < nParticles; i++)
 	 {
@@ -25,7 +25,7 @@ GausianParticleGen::GausianParticleGen(Vector3 desTip_vel_, Vector3 desTip_pos_,
 		 auto p = new Particle(posFinal, velFinal, molde->getColor(), molde->getAcceleration(), molde->getDamping(), molde->getSize());
 		 p->setMass(molde->getMass());
 		 p->setIsFire(molde->isFire());
-		 p->setTimeAlive(molde->getTimeAlive() + (desTip_t * d(gnd)));
+		 p->setTimeAlive(molde->getIniTimeAlive() + (desTip_t * d(gnd)));
 		 l.push_back(p);
 	 }
  }

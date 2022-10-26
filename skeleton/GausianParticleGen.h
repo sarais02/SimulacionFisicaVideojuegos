@@ -8,9 +8,9 @@ class GausianParticleGen: public ParticleGenerator
 {
 public:
 	GausianParticleGen(Vector3 desTip_vel, Vector3 desTip_pos, double desTip_t_, string name_);
-	~GausianParticleGen();
+	~GausianParticleGen()=default;
 
-	void generteParticle(list<Particle*>& l) override;
+	void generateParticle(list<Particle*>& l) override;
 	void increaseDesTipPos(Vector3 increase);
 	void increaseDesTipVel(Vector3 increase);
 	

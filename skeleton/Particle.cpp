@@ -24,6 +24,17 @@ void Particle::changeSize(double s, physx::PxTransform *pos, Vector4 c) {
 	//renderitem->shape->getGeometry().sphere().radius = s;
 	//renderitem->shape->setGeometry(physx::PxSphereGeometry(s));
 	DeregisterRenderItem(renderitem);
-	
 	renderitem = new RenderItem(CreateShape(physx::PxSphereGeometry(s)), pos, c);
+}
+
+bool Particle::update(double t) {
+	if (isAlive(t)) { integrate(t); return true; }
+	return false;
+}
+
+Particle* Particle::clone() const {
+	Particle* p = new Particle(pos.p, vel, color, a, damping, size_);
+	p->setTimeAlive(iniTimeAlive);
+	p->setIsFire(isFire_);
+	return p;
 }

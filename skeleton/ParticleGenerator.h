@@ -10,7 +10,7 @@ class ParticleGenerator
 {
 public:
 	//Vector3 pos, Vector3 vel, double _mass
-	virtual void generteParticle(list<Particle*>& l)=0;
+	virtual void generateParticle(list<Particle*>& l)=0;
 	void setName(string n);
 	inline string getName() {
 		return name;

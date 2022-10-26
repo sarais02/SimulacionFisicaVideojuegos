@@ -6,5 +6,6 @@ void ParticleGenerator::setName(string n) {
 }
 
 void ParticleGenerator::setParticle(Particle* model) {
+	//if (molde != nullptr)delete molde;
 	molde = model;
 }

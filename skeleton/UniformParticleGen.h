@@ -14,6 +14,6 @@ class UniformParticleGenerator :public ParticleGenerator
 	uniform_real_distribution<double>d{ -0.5, 0.5 };
 public:
 	UniformParticleGenerator(Vector3 pos, Vector3 vel);
-	~UniformParticleGenerator();
-	void generteParticle(list<Particle*>& l) override;
+	~UniformParticleGenerator()=default;
+	void generateParticle(list<Particle*>& l) override;
 };
