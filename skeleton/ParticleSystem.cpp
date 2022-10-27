@@ -13,7 +13,7 @@ ParticleSystem::ParticleSystem() {
 	xy->setTimeAlive(100000);
 	particles_list.push_back(xy);
 
-	shared_ptr<ParticleGenerator> it = shared_ptr<ParticleGenerator>(new UniformParticleGenerator(Vector3(2.0, 2.0, 2.0), Vector3(10.0, -5.0, 10.0)));
+	shared_ptr<ParticleGenerator>it = shared_ptr<ParticleGenerator>(new GausianParticleGen(Vector3(2.50, -2.0, 2.50), Vector3(.0, .0, .0), 1.0, "GaussianGenerator"));
 	particleGen_list.push_back(it);
 	(*it).changeActive();
 
@@ -193,7 +193,7 @@ void ParticleSystem::generateFireworkSystem() {
 	x->setTimeAlive(3.0);
 	fireworks_pool.push_back(x);
 
-	x = new Firework(Vector3(10000000, 1000000000, 0), Vector3(0, 30, 0), Vector3(0, 2, 0), 0.9999, 1.0, Firework::LINEAR);
+	x = new Firework(Vector3(10000000, 1000000000, 0), Vector3(0, 15, 0), Vector3(0, 2, 0), 0.9999, 1.0, Firework::LINEAR);
 	x->addGenerator(particleGen_list.front());
 	x->setTimeAlive(8.0);
 	fireworks_pool.push_back(x);
@@ -203,4 +203,21 @@ void ParticleSystem::generateFireworkSystem() {
 	x->addGenerator(*rocket);
 	x->setTimeAlive(8.0);
 	fireworks_pool.push_back(x);
+}
+
+void ParticleSystem::generateRocketSystem() {
+	shared_ptr<ParticleGenerator> p = getParticleGen("RocketSystem");
+	if (p != nullptr)
+		p->changeActive();
+	else {
+		auto s = new RocketGenerator({ 0,0,0 }, { 10,-5,0 }); s->setName("RocketSystem");
+		Particle* p = new Particle(Vector3(0.0, 0.0, 0.0), Vector3(5.0, 20.0, 0.0), Vector4(1.0, 1.0, 0.0, 1.0), gravity, 0.999);
+		s->setTypesRockets(fireworks_pool);
+		p->setColor(Vector4(255 / 250.0, 128 / 250.0, 0.0, 1.0));
+		p->setTimeAlive(8.0);
+
+		s->setParticle(p);
+		s->setNParticles(1);
+		particleGen_list.push_back(shared_ptr<ParticleGenerator>(s));
+	}
 }

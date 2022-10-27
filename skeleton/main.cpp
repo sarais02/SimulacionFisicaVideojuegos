@@ -168,8 +168,16 @@ void keyPress(unsigned char key, const PxTransform& camera)
 	case 'L':
 		particleSystem->generateFlamesSystem();
 		break;
+	case 'R':
+		particleSystem->generateRocketSystem();
+		break;
 	case 'Q':
-		//particleSystem->shootFirework(Firework::LINEAR);
+		particleSystem->shootFirework(Firework::BASIC);
+		break;
+	case 'E':
+		particleSystem->shootFirework(Firework::LINEAR);
+		break;
+	case 'T':
 		particleSystem->shootFirework(Firework::CIRCULAR);
 		break;
 	case 'C':

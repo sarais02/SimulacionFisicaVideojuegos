@@ -7,7 +7,10 @@ GausianParticleGen::GausianParticleGen(Vector3 desTip_vel_, Vector3 desTip_pos_,
 	desTip_vel = desTip_vel_;
 	desTip_t = desTip_t_;
 	gnd = default_random_engine(r());
-
+	Particle* p = new Particle(Vector3(-50.0, 0.0, 0.0), Vector3(30.0, 15.0, -30.0), Vector4(1.0, 1.0, 1.0, 1.0));
+	p->setTimeAlive(5.0);
+	p->setMass(5.0);
+	setParticle(p);
 	is_Gaussian = true;
 	active = true;
 }
@@ -22,10 +25,13 @@ GausianParticleGen::GausianParticleGen(Vector3 desTip_vel_, Vector3 desTip_pos_,
 		 Vector3 posFinal = Vector3(molde->getPosition().x + posi.x, molde->getPosition().y + posi.y, molde->getPosition().z + posi.z);
 		 Vector3 velFinal = Vector3(molde->getVelocity().x + v.x, molde->getVelocity().y + v.y, molde->getVelocity().z + v.z);
 
-		 auto p = new Particle(posFinal, velFinal, molde->getColor(), molde->getAcceleration(), molde->getDamping(), molde->getSize());
+		 //auto p = new Particle(posFinal, velFinal, molde->getColor(), molde->getAcceleration(), molde->getDamping(), molde->getSize());
+		 auto p = molde->clone();
 		 p->setMass(molde->getMass());
 		 p->setIsFire(molde->isFire());
 		 p->setTimeAlive(molde->getIniTimeAlive() + (desTip_t * d(gnd)));
+		 p->setVelocity(velFinal);
+		 p->setPosition(posFinal);
 		 l.push_back(p);
 	 }
  }

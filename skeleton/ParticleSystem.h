@@ -22,6 +22,7 @@ public:
 	void generateFogSystem();
 	void generateFlamesSystem();
 	void generateCircleSystem();
+	void generateRocketSystem();
 	void increaseDesTip(Vector3 increase);
 	void shootFirework(Firework::FIREWORK_TYPE type);
 	void onParticleDeath(Particle* p);

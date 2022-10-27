@@ -23,13 +23,14 @@ void Firework::explode(list<Particle*>& list){
         for (auto it : gens) {
             auto pt = clone();
             pt->deleteGens();
-            pt->setAcceleration(Vector3(0, -15, 0));
-            pt->setVelocity(pt->getVelocity());
+            pt->setAcceleration(Vector3(0, -10, 0));
+            pt->setVelocity(pt->getVelocity()/2);
             auto r1 = rand() % 255 + 0;
             auto r2 = rand() % 255 + 0;
             auto r3 = rand() % 255 + 0;
             pt->setColor(Vector4(r1/255.0, r2 / 255.0, r3 / 255.0, 1.0));
             (*it).setNParticles(20);
+            if (pt->getSize() > 0.5)pt->setSize(0.5);
             (*it).setParticle(pt);
             (*it).generateParticle(list);
             pt->setPosition(Vector3(10000, 100000, 0));
@@ -37,7 +38,8 @@ void Firework::explode(list<Particle*>& list){
         break;
     case Firework::LINEAR:
         for (auto it : gens) {
-            Firework* pt = clone(); pt->setAcceleration(Vector3(1, -15, 1));
+            Firework* pt = clone(); 
+            pt->setAcceleration(Vector3(1, -10 / (nGenerations + 1), 1));
             pt->type = BASIC;
             pt->setVelocity(pt->getVelocity());
             auto r1 = rand() % 255 + 0;
@@ -46,6 +48,8 @@ void Firework::explode(list<Particle*>& list){
             pt->setColor(Vector4(r1 / 255.0, r2 / 255.0, r3 / 255.0, 1.0));
             (*it).setParticle(pt);
             (*it).setNParticles(20);
+            if (pt->getSize() > 0.5)pt->setSize(0.5);
+            pt->setTimeAlive(getIniTimeAlive() / 2);
             (*it).generateParticle(list);
             pt->setPosition(Vector3(10000, 100000, 0));
         }
@@ -53,7 +57,7 @@ void Firework::explode(list<Particle*>& list){
     case Firework::CIRCULAR:
         for (auto it : gens) {
             auto pt = clone(); pt->setAcceleration(Vector3(0, -15, 0));
-            pt->setVelocity(pt->getVelocity() * 3);
+            pt->setVelocity(pt->getVelocity() * 2);
             pt->setGenerations(getGenerations() + 1);
             if (getGenerations() >= 2) pt->type = BASIC;
             auto r1 = rand() % 255 + 0;

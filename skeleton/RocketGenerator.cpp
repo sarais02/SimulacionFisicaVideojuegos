@@ -1,6 +1,7 @@
 #include "RocketGenerator.h"
+#include <iostream>
 
-RocketGenerator::RocketGenerator(Vector3 pos, Vector3 vel) {
+RocketGenerator::RocketGenerator(Vector3 pos, Vector3 vel){
 
 	active = true;
 	gnd = default_random_engine(r());
@@ -13,17 +14,19 @@ RocketGenerator::RocketGenerator(Vector3 pos, Vector3 vel) {
 void RocketGenerator::generateParticle(list<Particle*>& l) {
 	Vector3 newpos, newvel;
 	for (int i = 0; i < nParticles; i++) {
+		int random = rand() % 3;
 		newpos = molde->getPosition() + Vector3(meanPos.x * d(gnd), meanPos.y * d(gnd), meanPos.z * d(gnd));
 		newvel = molde->getVelocity() + Vector3(meanVel.x * d(gnd), meanVel.y * d(gnd), meanVel.z * d(gnd));
 		Firework* xy;
-		switch (type_to_generate) {
-		case Firework::BASIC:
+		cout << random << "\n";
+		switch (random) {
+		case 0:/*Firework::BASIC:*/
 			xy = types.at(0)->clone();
 			break;
-		case Firework::LINEAR:
+		case 1: /*Firework::LINEAR:*/
 			xy = types.at(1)->clone();
 			break;
-		case Firework::CIRCULAR:
+		case 2: /*Firework::CIRCULAR:*/
 			xy = types.at(2)->clone();
 			break;
 		}
@@ -31,9 +34,5 @@ void RocketGenerator::generateParticle(list<Particle*>& l) {
 		xy->setVelocity(newvel);
 		l.push_back(xy);
 	}
-	type_to_generate = Firework::BASIC;
-}
-
-void RocketGenerator::ChangeType(Firework::FIREWORK_TYPE x) {
-	type_to_generate = x;
+	changeActive();
 }
