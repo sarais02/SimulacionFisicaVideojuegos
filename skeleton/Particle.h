@@ -10,7 +10,8 @@ class Particle
 public:
 
 	Particle() {};
-	Particle(Vector3 Pos, Vector3 Vel, Vector4 c=Vector4(1.0, 1.0, 1.0, 1.0), Vector3 a=Vector3(0.0, -9.8, 0.0), double dam=0.999, double size=1.0);
+	Particle(Vector3 Pos, Vector3 Vel, Vector4 c=Vector4(1.0, 1.0, 1.0, 1.0), Vector3 a=Vector3(0.0, -9.8, 0.0), 
+		double dam=0.999, double size=1.0, double mass=5.0);
 	
 	~Particle();
 	
@@ -18,6 +19,8 @@ public:
 	virtual bool update(double t);
 	void changeSize(double s, physx::PxTransform *pos, Vector4 c);
 	virtual Particle* clone()const;
+	void clearForce();
+	void addForce(const Vector3& f);
 
 	inline void setVelocity(Vector3 Vel) {
 		vel = Vel;
@@ -88,16 +91,21 @@ public:
 	inline void setIsFire(bool f) {
 		isFire_ = f;
 	}
+	inline double getInverseMass() {
+		return inverse_mass;
+	}
 
 protected:
 
 	Vector3 vel, a;
+	Vector3 force;
 	Vector4 color;
 	physx::PxTransform pos;
 	//unique_ptr<RenderItem>renderitem;
 	RenderItem *renderitem;
 	double damping;
 	double mass;
+	double inverse_mass;
 	type type_;
 	double timeAlive, iniTimeAlive;
 	double size_;

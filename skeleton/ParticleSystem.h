@@ -5,6 +5,7 @@
 #include <list>
 #include "ParticleGenerator.h"
 #include "Firework.h"
+#include "ParticleForceRegistry.h"
 
 using namespace std;
 
@@ -33,6 +34,7 @@ protected:
 	Vector3 gravity;
 	list <Particle*> particles_list;
 	list<shared_ptr<ParticleGenerator>>particleGen_list;
-
+	list<shared_ptr<ForceGenerator>> forceGen_list;
+	ParticleForceRegistry pfr;
 	vector<Firework*> fireworks_pool;
 };

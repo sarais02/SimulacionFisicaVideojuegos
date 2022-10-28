@@ -256,7 +256,9 @@
     <ClCompile Include="callbacks.cpp" />
     <ClCompile Include="CircleGenerator.cpp" />
     <ClCompile Include="Firework.cpp" />
+    <ClCompile Include="ForceGenerator.cpp" />
     <ClCompile Include="GausianParticleGen.cpp" />
+    <ClCompile Include="GravityForceGenerator.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="Particle.cpp" />
     <ClCompile Include="ParticleGenerator.cpp" />
@@ -273,8 +275,11 @@
     <ClInclude Include="CircleGenerator.h" />
     <ClInclude Include="core.hpp" />
     <ClInclude Include="Firework.h" />
+    <ClInclude Include="ForceGenerator.h" />
     <ClInclude Include="GausianParticleGen.h" />
+    <ClInclude Include="GravityForceGenerator.h" />
     <ClInclude Include="Particle.h" />
+    <ClInclude Include="ParticleForceRegistry.h" />
     <ClInclude Include="ParticleGenerator.h" />
     <ClInclude Include="ParticleSystem.h" />
     <ClInclude Include="Proyectil.h" />

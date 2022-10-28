@@ -7,6 +7,7 @@
 
 ParticleSystem::ParticleSystem() {
 	gravity = Vector3(0.0, -10.0, 0.0);	
+	pfr = ParticleForceRegistry();
 	//particleGen_list.push_back(shared_ptr<ParticleGenerator>(new UniformParticleGenerator(Vector3(4.0, 1.0, 4.0), Vector3(0.2, 0.2, 0.0))));
 	particles_list = list<Particle*>();
 	auto xy = new Particle(Vector3(0, 0, 0), Vector3(0, 0, 0), Vector4(1,1,1,1), Vector3(0, 0, 0), 0.9999, 1.0); 
@@ -46,6 +47,7 @@ ParticleSystem::~ParticleSystem() {
 
 void ParticleSystem::update(double t) {
 
+	pfr.updateForces(t);
 	for (auto g = particleGen_list.begin(); g != particleGen_list.end(); ++g)
 	{
 		if ((*g)->isActive()) {
