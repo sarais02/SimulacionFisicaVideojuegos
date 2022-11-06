@@ -4,6 +4,7 @@
 #include <time.h>
 #include <list>
 #include <string>
+#include "ParticleForceRegistry.h"
 using namespace std;
 
 class ParticleGenerator
@@ -34,6 +35,7 @@ public:
 	inline bool isGaussian() {
 		return is_Gaussian;
 	}
+	void addParticleForceRegistry(ParticleForceRegistry* _pfr) { pfr = _pfr; }
 	
 
 protected:
@@ -45,4 +47,5 @@ protected:
 	Particle* molde;
 	bool active;
 	bool is_Gaussian=false;
+	ParticleForceRegistry* pfr;
 };

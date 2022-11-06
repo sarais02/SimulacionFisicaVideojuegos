@@ -7,9 +7,7 @@ GausianParticleGen::GausianParticleGen(Vector3 desTip_vel_, Vector3 desTip_pos_,
 	desTip_vel = desTip_vel_;
 	desTip_t = desTip_t_;
 	gnd = default_random_engine(r());
-	Particle* p = new Particle(Vector3(-50.0, 0.0, 0.0), Vector3(30.0, 15.0, -30.0), Vector4(1.0, 1.0, 1.0, 1.0));
-	p->setTimeAlive(5.0);
-	p->setMass(5.0);
+	Particle* p = new Particle();
 	setParticle(p);
 	is_Gaussian = true;
 	active = true;
@@ -32,6 +30,11 @@ GausianParticleGen::GausianParticleGen(Vector3 desTip_vel_, Vector3 desTip_pos_,
 		 p->setTimeAlive(molde->getIniTimeAlive() + (desTip_t * d(gnd)));
 		 p->setVelocity(velFinal);
 		 p->setPosition(posFinal);
+		 for (int i = 0; i < molde->forcesNames.size(); i++)
+		 {
+			 pfr->addRegistry(pfr->getForceGen(molde->forcesNames[i]), p);
+		 }
+		 //pfr->addRegistry(forceGen_list.front(), p);
 		 l.push_back(p);
 	 }
  }

@@ -10,7 +10,7 @@ public:
 	inline void setGravity(Vector3 g){
 		_gravity = g;
 	}
+	//~GravityForceGenerator() {};
 protected:
 	Vector3 _gravity;
-
 };

@@ -1,6 +1,8 @@
 #pragma once
 #include "core.hpp"
 #include "RenderUtils.hpp"
+#include <string>
+#include <vector>
 #include <memory>
 
 using namespace std;
@@ -10,10 +12,11 @@ class Particle
 public:
 
 	Particle() {};
-	Particle(Vector3 Pos, Vector3 Vel, Vector4 c=Vector4(1.0, 1.0, 1.0, 1.0), Vector3 a=Vector3(0.0, -9.8, 0.0), 
+	Particle(Vector3 Pos, Vector3 Vel, Vector4 c=Vector4(1.0, 1.0, 1.0, 1.0), Vector3 a=Vector3(0.0, 0.0, 0.0), 
 		double dam=0.999, double size=1.0, double mass=5.0);
 	
 	~Particle();
+	vector<string>forcesNames;
 	
 	void integrate(double t); //Actualiza posicion
 	virtual bool update(double t);
@@ -39,6 +42,7 @@ public:
 	}
 	inline void setMass(double mass_) {
 		mass = mass_;
+		inverse_mass = 1.0 / mass;
 	}
 	inline double getMass() {
 		return mass;
@@ -94,7 +98,12 @@ public:
 	inline double getInverseMass() {
 		return inverse_mass;
 	}
-
+	inline void setForce(Vector3 acc) {
+		force = acc;
+	}
+	inline Vector3 getForce() {
+		return force;
+	}
 protected:
 
 	Vector3 vel, a;
@@ -110,5 +119,7 @@ protected:
 	double timeAlive, iniTimeAlive;
 	double size_;
 	bool isFire_;
+
+	
 };
 

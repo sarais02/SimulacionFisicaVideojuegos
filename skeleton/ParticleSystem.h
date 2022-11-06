@@ -18,6 +18,7 @@ public:
 	void update(double t);
 
 	shared_ptr<ParticleGenerator> getParticleGen(string name);
+	shared_ptr<ForceGenerator> getForceGen(string name);
 	void generateFireworkSystem();
 	void generateHosepipeSystem();
 	void generateFogSystem();
@@ -35,6 +36,6 @@ protected:
 	list <Particle*> particles_list;
 	list<shared_ptr<ParticleGenerator>>particleGen_list;
 	list<shared_ptr<ForceGenerator>> forceGen_list;
-	ParticleForceRegistry pfr;
+	ParticleForceRegistry* pfr;
 	vector<Firework*> fireworks_pool;
 };
