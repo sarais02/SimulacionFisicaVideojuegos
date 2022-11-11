@@ -34,7 +34,6 @@ GausianParticleGen::GausianParticleGen(Vector3 desTip_vel_, Vector3 desTip_pos_,
 		 {
 			 pfr->addRegistry(pfr->getForceGen(molde->forcesNames[i]), p);
 		 }
-		 //pfr->addRegistry(forceGen_list.front(), p);
 		 l.push_back(p);
 	 }
  }

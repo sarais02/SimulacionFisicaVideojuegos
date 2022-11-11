@@ -6,6 +6,7 @@
 #include "RocketGenerator.h"
 #include "GravityForceGenerator.h"
 #include "ParticleDragGenerator.h"
+#include "WindGenerator.h"
 
 ParticleSystem::ParticleSystem() {
 	gravity = Vector3(0.0, -10.0, 0.0);	
@@ -17,6 +18,12 @@ ParticleSystem::ParticleSystem() {
 	auto gravityForceGen2 = shared_ptr<ForceGenerator>(new GravityForceGenerator(Vector3(0, 6, 0)));
 	gravityForceGen2.get()->setName("Gravity2");
 	forceGen_list.push_back(gravityForceGen2);
+
+	//auto dragGen = shared_ptr<ParticleDragGenerator>(new ParticleDragGenerator(50.0, 0.0)); //k2=k1/10
+	//forceGen_list.push_back(dragGen);
+
+	auto viento = shared_ptr<WindGenerator>(new WindGenerator(5.0, 0.0, {-20, 0, 0}));
+	forceGen_list.push_back(viento);
 	
 	particles_list = list<Particle*>();
 	/*auto xy = new Particle(Vector3(0, 40, 0), Vector3(0, 0, 0), Vector4(1,1,1,1), Vector3(0, 0, 0), 0.9999, 1.0, 5); 
@@ -112,6 +119,7 @@ void ParticleSystem::generateHosepipeSystem() {
 		p->setTimeAlive(2.0);
 		p->setMass(3.0);
 		pfr->addRegistry(getForceGen("GravityForce"), p);
+		pfr->addRegistry(getForceGen("Viento"), p);
 		s->setParticle(p);
 		s->addParticleForceRegistry(pfr);
 		particleGen_list.push_back(shared_ptr<ParticleGenerator>(s));
@@ -128,6 +136,7 @@ void ParticleSystem::generateFogSystem() {
 		molde->setTimeAlive(1.0);
 		molde->setMass(5.0);
 		pfr->addRegistry(getForceGen("GravityForce"), molde);
+		pfr->addRegistry(getForceGen("Viento"), molde);
 		s->setParticle(molde);
 		s->addParticleForceRegistry(pfr);
 		s->setNParticles(30);
@@ -146,6 +155,7 @@ void ParticleSystem::generateFlamesSystem() {
 		p->setIsFire(true);
 		p->setMass(5.0);
 		pfr->addRegistry(getForceGen("Gravity2"), p);
+		pfr->addRegistry(getForceGen("Viento"), p);
 		s->setParticle(p);
 		s->addParticleForceRegistry(pfr);
 		s->setNParticles(30);

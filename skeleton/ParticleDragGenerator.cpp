@@ -2,7 +2,7 @@
 
 
 ParticleDragGenerator::ParticleDragGenerator(const float k1, const float k2): _k1(k1), _k2(k2) {
-	setName("Viento");
+	setName("Drag");
 }
 
 void ParticleDragGenerator::updateForce(Particle* p, double t) {
@@ -14,6 +14,14 @@ void ParticleDragGenerator::updateForce(Particle* p, double t) {
 	drag_coef = _k1 * drag_coef + _k2 * drag_coef * drag_coef;
 	dragF = -v * drag_coef;
 
-	cout << dragF.x << "\t" << dragF.y << "\t" << dragF.z << "\n";
+	//cout << dragF.x << "\t" << dragF.y << "\t" << dragF.z << "\n";
 	p->addForce(dragF);
+}
+
+Vector3 ParticleDragGenerator::calculateDrag(Vector3 v) {
+	float drag_coef = v.normalize();
+	Vector3 dragF;
+	drag_coef = _k1 * drag_coef + _k2 * drag_coef * drag_coef;
+	dragF = -v * drag_coef;
+	return dragF;
 }

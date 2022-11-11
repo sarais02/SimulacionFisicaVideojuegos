@@ -270,6 +270,7 @@
     <ClCompile Include="Render\Render.cpp" />
     <ClCompile Include="RocketGenerator.cpp" />
     <ClCompile Include="UniformParticleGen.cpp" />
+    <ClCompile Include="WindGenerator.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="callbacks.hpp" />
@@ -290,6 +291,7 @@
     <ClInclude Include="Render\Render.h" />
     <ClInclude Include="RocketGenerator.h" />
     <ClInclude Include="UniformParticleGen.h" />
+    <ClInclude Include="WindGenerator.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
