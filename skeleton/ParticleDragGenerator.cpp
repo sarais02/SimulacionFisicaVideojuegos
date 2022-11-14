@@ -5,8 +5,8 @@ ParticleDragGenerator::ParticleDragGenerator(const float k1, const float k2): _k
 	setName("Drag");
 }
 
-void ParticleDragGenerator::updateForce(Particle* p, double t) {
-	if (fabs(p->getInverseMass()) < 1e-10) return;
+void ParticleDragGenerator::updateForce(Particle* p, double duration) {
+	if (fabs(p->getInverseMass()) < t) return;
 
 	Vector3 v = p->getVelocity();
 	float drag_coef = v.normalize();

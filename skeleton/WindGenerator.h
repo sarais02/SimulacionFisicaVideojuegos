@@ -9,6 +9,6 @@ public:
 		v = vel;
 	}
 
-private:
+protected:
 	Vector3 vel;
 };

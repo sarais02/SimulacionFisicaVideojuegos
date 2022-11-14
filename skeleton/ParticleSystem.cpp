@@ -7,6 +7,8 @@
 #include "GravityForceGenerator.h"
 #include "ParticleDragGenerator.h"
 #include "WindGenerator.h"
+#include "WhirlwindGenerator.h"
+#include "ExplosionForceGenerator.h"
 
 ParticleSystem::ParticleSystem() {
 	gravity = Vector3(0.0, -10.0, 0.0);	
@@ -24,6 +26,12 @@ ParticleSystem::ParticleSystem() {
 
 	auto viento = shared_ptr<WindGenerator>(new WindGenerator(5.0, 0.0, {-20, 0, 0}));
 	forceGen_list.push_back(viento);
+
+	auto torbellino = shared_ptr<WhirlwindGenerator>(new WhirlwindGenerator({ 0, 0, 0 }, {0,20,0}, 1));
+	forceGen_list.push_back(torbellino);
+
+	auto explo = shared_ptr<ExplosionForceGenerator>(new ExplosionForceGenerator(15, 25, 3, {10,0,0}));
+	forceGen_list.push_back(explo);
 	
 	particles_list = list<Particle*>();
 	/*auto xy = new Particle(Vector3(0, 40, 0), Vector3(0, 0, 0), Vector4(1,1,1,1), Vector3(0, 0, 0), 0.9999, 1.0, 5); 
@@ -43,6 +51,14 @@ ParticleSystem::ParticleSystem() {
 	generateFireworkSystem();
 	aux->setTypesRockets(fireworks_pool);
 
+	Particle* p = new Particle({ 5,0,0 }, { 0,0,0 }, {1,1,1,1}, Vector3{ 0,0,0 }, 0.98,1.0, 0.2); p->setTimeAlive(100000);
+
+	Particle* p2 = new Particle({ 7,0,0 }, { 0,0,0 }, { 1,1,1,1 }, Vector3{ 0,0,0 }, 0.98,1.0, 4); p2->setTimeAlive(100000);
+	pfr->addRegistry(explo, p);
+	pfr->addRegistry(explo, p2);
+
+	particles_list.push_back(p);
+	particles_list.push_back(p2);
 	//pfr.addRegistry(gravityFoceGen, xy);
 }
 
@@ -117,9 +133,11 @@ void ParticleSystem::generateHosepipeSystem() {
 		auto s = new GausianParticleGen(Vector3(4.0, 1.0, 4.0), Vector3(0.2, 0.2, 0.0), 0.8, "HosePipeSystem");
 		Particle* p = new Particle(Vector3(-50.0, 0.0, 0.0), Vector3(30.0, 15.0, -30.0), Vector4(0.0, 0.7, 0.96, 1.0));
 		p->setTimeAlive(2.0);
-		p->setMass(3.0);
+		p->setMass(0.5);
 		pfr->addRegistry(getForceGen("GravityForce"), p);
-		pfr->addRegistry(getForceGen("Viento"), p);
+		//pfr->addRegistry(getForceGen("Viento"), p);
+		//pfr->addRegistry(getForceGen("Torbellino"), p);
+		pfr->addRegistry(getForceGen("Explosion"), p);
 		s->setParticle(p);
 		s->addParticleForceRegistry(pfr);
 		particleGen_list.push_back(shared_ptr<ParticleGenerator>(s));
@@ -131,15 +149,19 @@ void ParticleSystem::generateFogSystem() {
 	if (p != nullptr)
 		p->changeActive();
 	else {
-		auto s = new GausianParticleGen(Vector3(0.2, 0.1, 0.2), Vector3(20.0, 8.0, 5.0), 0.6, "FogSystem");
-		Particle* molde = new Particle(Vector3(0.0, 30.0, 0.0), Vector3(2.5, 8.0, -2.5), Vector4(1.0, 1.0, 1.0, 0.25), Vector3(0,/*-5*/0,0), 0.75, 0.3);
-		molde->setTimeAlive(1.0);
-		molde->setMass(5.0);
+
+		//auto s = new GausianParticleGen(Vector3(0.2, 0.1, 0.2), Vector3(20.0, 8.0, 5.0), 0.6, "FogSystem");
+		auto s = new GausianParticleGen(Vector3(0.2, 0.1, 0.2), Vector3(7.0, 8.0, 5.0), 0.6, "FogSystem");
+		Particle* molde = new Particle(Vector3(0.0, 30.0, 0.0), Vector3(2.5, 8.0, -2.5), Vector4(1.0, 1.0, 1.0, 0.25), Vector3(0,/*-5*/0,0), 0.75, 0.25, 0.2);
+		//molde->setTimeAlive(1.0);
+		molde->setTimeAlive(4.0);
 		pfr->addRegistry(getForceGen("GravityForce"), molde);
-		pfr->addRegistry(getForceGen("Viento"), molde);
+		//pfr->addRegistry(getForceGen("Viento"), molde);
+		//pfr->addRegistry(getForceGen("Torbellino"), molde);
+		pfr->addRegistry(getForceGen("Explosion"), molde);
 		s->setParticle(molde);
 		s->addParticleForceRegistry(pfr);
-		s->setNParticles(30);
+		s->setNParticles(1);
 		particleGen_list.push_back(shared_ptr<ParticleGenerator>(s));
 	}
 }
@@ -155,7 +177,8 @@ void ParticleSystem::generateFlamesSystem() {
 		p->setIsFire(true);
 		p->setMass(5.0);
 		pfr->addRegistry(getForceGen("Gravity2"), p);
-		pfr->addRegistry(getForceGen("Viento"), p);
+		//pfr->addRegistry(getForceGen("Viento"), p);
+		pfr->addRegistry(getForceGen("Explosion"), p);
 		s->setParticle(p);
 		s->addParticleForceRegistry(pfr);
 		s->setNParticles(30);

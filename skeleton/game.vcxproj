@@ -255,6 +255,7 @@
   <ItemGroup>
     <ClCompile Include="callbacks.cpp" />
     <ClCompile Include="CircleGenerator.cpp" />
+    <ClCompile Include="ExplosionForceGenerator.cpp" />
     <ClCompile Include="Firework.cpp" />
     <ClCompile Include="ForceGenerator.cpp" />
     <ClCompile Include="GausianParticleGen.cpp" />
@@ -270,12 +271,14 @@
     <ClCompile Include="Render\Render.cpp" />
     <ClCompile Include="RocketGenerator.cpp" />
     <ClCompile Include="UniformParticleGen.cpp" />
+    <ClCompile Include="WhirlwindGenerator.cpp" />
     <ClCompile Include="WindGenerator.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="callbacks.hpp" />
     <ClInclude Include="CircleGenerator.h" />
     <ClInclude Include="core.hpp" />
+    <ClInclude Include="ExplosionForceGenerator.h" />
     <ClInclude Include="Firework.h" />
     <ClInclude Include="ForceGenerator.h" />
     <ClInclude Include="GausianParticleGen.h" />
@@ -291,6 +294,7 @@
     <ClInclude Include="Render\Render.h" />
     <ClInclude Include="RocketGenerator.h" />
     <ClInclude Include="UniformParticleGen.h" />
+    <ClInclude Include="WhirlwindGenerator.h" />
     <ClInclude Include="WindGenerator.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
