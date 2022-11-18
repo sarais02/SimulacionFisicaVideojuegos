@@ -132,7 +132,7 @@ void keyPress(unsigned char key, const PxTransform& camera)
 	{
 		break;
 	}
-	case 'G': //Artillero
+	case 'K': //Artillero
 	{
 		auto bullet=new Proyectil(camera.p, GetCamera()->getDir()*30);
 		bullet->setAcceleration(Vector3(0.0, -20.0, 0.0));
@@ -160,28 +160,43 @@ void keyPress(unsigned char key, const PxTransform& camera)
 		break;
 	}
 	case 'M':
-		particleSystem->generateHosepipeSystem();
+		particleSystem->generateHosepipeSystem(); //MANGUERA
 		break;
 	case 'N':
-		particleSystem->generateFogSystem();
+		particleSystem->generateFogSystem();	//NIEBLA
 		break;
 	case 'L':
-		particleSystem->generateFlamesSystem();
+		particleSystem->generateFlamesSystem(); //FUEGO
 		break;
 	case 'R':
-		particleSystem->generateRocketSystem();
+		particleSystem->generateRocketSystem(); //FUEGOS ARTIFICIALES RANDOM
 		break;
 	case 'Q':
-		particleSystem->shootFirework(Firework::BASIC);
+		particleSystem->shootFirework(Firework::BASIC); //FUEGOS ARTIFICIALES
 		break;
 	case 'E':
-		particleSystem->shootFirework(Firework::LINEAR);
+		particleSystem->shootFirework(Firework::LINEAR); //FUEGOS ARTIFICIALES
 		break;
 	case 'T':
-		particleSystem->shootFirework(Firework::CIRCULAR);
+		particleSystem->shootFirework(Firework::CIRCULAR); //FUEGOS ARTIFICIALES
+		break;
+	case 'U':
+		particleSystem->generateWhirlSystem(); //TORBELLINO
+		break;
+	case 'G':
+		particleSystem->generateGalaxy(); //GALAXIA
+		break;
+	case 'J':
+		particleSystem->generateExplosionSystem(); //EXPLOSION
+		break;
+	case 'Y':
+		particleSystem->activeExplosion(true);
+		break;
+	case 'I':
+		particleSystem->activeExplosion(false);
 		break;
 	case 'C':
-		particleSystem->generateCircleSystem();
+		particleSystem->generateCircleSystem(); //CIRCULAR
 		break;
 	case '+':
 		particleSystem->increaseDesTip(Vector3(1.0, 1.0, 0.0));

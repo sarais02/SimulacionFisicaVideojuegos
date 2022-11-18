@@ -7,15 +7,7 @@ ParticleDragGenerator::ParticleDragGenerator(const float k1, const float k2): _k
 
 void ParticleDragGenerator::updateForce(Particle* p, double duration) {
 	if (fabs(p->getInverseMass()) < t) return;
-
-	Vector3 v = p->getVelocity();
-	float drag_coef = v.normalize();
-	Vector3 dragF;
-	drag_coef = _k1 * drag_coef + _k2 * drag_coef * drag_coef;
-	dragF = -v * drag_coef;
-
-	//cout << dragF.x << "\t" << dragF.y << "\t" << dragF.z << "\n";
-	p->addForce(dragF);
+	p->addForce(calculateDrag(p->getVelocity()));
 }
 
 Vector3 ParticleDragGenerator::calculateDrag(Vector3 v) {

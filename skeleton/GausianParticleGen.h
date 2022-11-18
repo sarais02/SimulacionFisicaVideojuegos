@@ -13,6 +13,8 @@ public:
 	void generateParticle(list<Particle*>& l) override;
 	void increaseDesTipPos(Vector3 increase);
 	void increaseDesTipVel(Vector3 increase);
+	void galaxyColor(Vector3 pos);
+	void setUpMeteor(Vector3 pos);
 	
 private:
 	//Cuanto más, más ancho es el camino

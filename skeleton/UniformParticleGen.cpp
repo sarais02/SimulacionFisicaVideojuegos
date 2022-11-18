@@ -35,14 +35,10 @@ void UniformParticleGenerator::generateParticle(list<Particle*>& l) {
 		p->setDamping(molde->getDamping());
 		p->setMass(molde->getMass());
 		p->setTimeAlive(molde->getIniTimeAlive());
-		/*Firework* fk = dynamic_cast<Firework*>(p);
-		if (fk != nullptr) {
-			auto r1 = rand() % 255 + 0;
-			auto r2 = rand() % 255 + 0;
-			auto r3 = rand() % 255 + 0;
-			p->setColor(Vector4(r1 / 255.0, r2 / 255.0, r3 / 255.0, 1.0));
-			cout << r1 << ", " << r2 << ", " << r3 << "\n";
-		}*/
+		for (int i = 0; i < molde->forcesNames.size(); i++)
+		{
+			pfr->addRegistry(pfr->getForceGen(molde->forcesNames[i]), p);
+		}
 		l.push_back(p);
 	}
 }

@@ -1,4 +1,5 @@
 #include "GausianParticleGen.h"
+#include <algorithm>
 #include <iostream>
 
 GausianParticleGen::GausianParticleGen(Vector3 desTip_vel_, Vector3 desTip_pos_, double desTip_t_, string name_) {
@@ -22,8 +23,11 @@ GausianParticleGen::GausianParticleGen(Vector3 desTip_vel_, Vector3 desTip_pos_,
 
 		 Vector3 posFinal = Vector3(molde->getPosition().x + posi.x, molde->getPosition().y + posi.y, molde->getPosition().z + posi.z);
 		 Vector3 velFinal = Vector3(molde->getVelocity().x + v.x, molde->getVelocity().y + v.y, molde->getVelocity().z + v.z);
+		 
+		 if (name=="Galaxy") galaxyColor(posFinal);
+		 
+		 if (name == "ExplosionSystem") setUpMeteor(posFinal);
 
-		 //auto p = new Particle(posFinal, velFinal, molde->getColor(), molde->getAcceleration(), molde->getDamping(), molde->getSize());
 		 auto p = molde->clone();
 		 p->setMass(molde->getMass());
 		 p->setIsFire(molde->isFire());
@@ -49,4 +53,31 @@ GausianParticleGen::GausianParticleGen(Vector3 desTip_vel_, Vector3 desTip_pos_,
 	 if (desTip_vel.x < 0) desTip_vel.x = 0;
 	 if (desTip_vel.y < 0) desTip_vel.y = 0;
 	 if (desTip_vel.z < 0) desTip_vel.z = 0;
+ }
+
+ void GausianParticleGen::galaxyColor(Vector3 posFinal)
+ {
+	 auto r = rand() % 11 + 0;
+	 if (posFinal.x < desTip_pos.x / 8) molde->setColor(Vector4(1.0, 1.0, 1.0, 1.0)); //blanco
+	 else if (posFinal.x <= 2 * desTip_pos.x / 4) molde->setColor(Vector4(0.0, 1.0, 1.0, 1.0)); //cian
+	 else if (posFinal.x < 5 * desTip_pos.x / 8) molde->setColor(Vector4(1.0, 0.0, 1.0, 1.0)); //rosa
+	 else molde->setColor(Vector4(37.0 / 255, 36.0 / 255, 64.0 / 255, 1.0)); //azul
+ }
+
+ void GausianParticleGen::setUpMeteor(Vector3 pos) {
+	 if (abs(pos.x - molde->getPosition().x)>(6 * desTip_pos.x) / 8.0 && abs(pos.y - molde->getPosition().y) > (6 * desTip_pos.y) / 8.0 && abs(pos.z - molde->getPosition().z) > (6 * desTip_pos.z) / 8.0) {
+		 molde->setColor(Vector4(84/255.0, 56 / 255.0, 34 / 255.0, 1.0)); //marron
+		 molde->setSize(0.8);
+		 molde->setMass(0.25);
+	 }
+	 else if (abs(pos.x - molde->getPosition().x) < (3*desTip_pos.x) / 8.0 && abs(pos.y- molde->getPosition().y) < (3 * desTip_pos.x) / 8.0 && abs(pos.z - molde->getPosition().z) < (3 * desTip_pos.x) / 8.0) {
+		 molde->setColor(Vector4(1.0, 1.0, 0.0, 1.0)); //amarillo
+		 molde->setSize(0.5);
+		 molde->setMass(50.5);
+	 }
+	 else {
+		 molde->setColor(Vector4(1.0, 64 / 255.0, 0.0, 1.0)); //rojo/naranja
+		 molde->setSize(0.3);
+		 molde->setMass(2.0);
+	 }
  }
