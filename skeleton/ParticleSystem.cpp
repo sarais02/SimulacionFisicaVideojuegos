@@ -389,8 +389,8 @@ void ParticleSystem::generateSlinky() {
 
 	auto f1 = shared_ptr<ForceGenerator>(new SpringForceGenerator(50, 10, p1)); //LA 1 CON LA 2
 	pfr->addRegistry(f1, p2);
-	auto f2 = shared_ptr<ForceGenerator>(new SpringForceGenerator(45, 10, p2)); //LA 2 CON LA 1
-	pfr->addRegistry(f2, p1);
+	//auto f2 = shared_ptr<ForceGenerator>(new SpringForceGenerator(45, 10, p2)); //LA 2 CON LA 1
+	//pfr->addRegistry(f2, p1);
 	auto f3 = shared_ptr<ForceGenerator>(new SpringForceGenerator(40, 10, p2)); //LA 2 CON LA 3
 	pfr->addRegistry(f3, p3);
 	auto f4 = shared_ptr<ForceGenerator>(new SpringForceGenerator(35, 10, p3)); //LA 3 CON LA 2
@@ -398,28 +398,28 @@ void ParticleSystem::generateSlinky() {
 	auto f5 = shared_ptr<ForceGenerator>(new SpringForceGenerator(30, 10, p3)); //LA 3 CON LA 4
 	pfr->addRegistry(f5, p4);
 	auto f6 = shared_ptr<ForceGenerator>(new SpringForceGenerator(25, 10, p4)); //LA 4 CON LA 3
-	pfr->addRegistry(f1, p3);
+	pfr->addRegistry(f6, p3);
 	auto f7 = shared_ptr<ForceGenerator>(new SpringForceGenerator(20, 10, p4)); //LA 4 CON LA 5
-	pfr->addRegistry(f2, p5);
+	pfr->addRegistry(f7, p5);
 	auto f8 = shared_ptr<ForceGenerator>(new SpringForceGenerator(15, 10, p5)); //LA 5 CON LA 4
-	pfr->addRegistry(f3, p4);
+	pfr->addRegistry(f8, p4);
 	auto f9 = shared_ptr<ForceGenerator>(new SpringForceGenerator(10, 10, p5)); //LA 5 CON LA 6
-	pfr->addRegistry(f4, p6);
+	pfr->addRegistry(f9, p6);
 	auto f10 = shared_ptr<ForceGenerator>(new SpringForceGenerator(5, 10, p6)); //LA 6 CON LA 5
-	pfr->addRegistry(f5, p5);
+	pfr->addRegistry(f10, p5);
 	
 	forceGen_list.push_back(f1); forceGen_list.push_back(f6);
-	forceGen_list.push_back(f2); forceGen_list.push_back(f7);
+	/*forceGen_list.push_back(f2);*/ forceGen_list.push_back(f7);
 	forceGen_list.push_back(f3); forceGen_list.push_back(f8);
 	forceGen_list.push_back(f4); forceGen_list.push_back(f9);
 	forceGen_list.push_back(f5); forceGen_list.push_back(f10);
 
-	particles_list.push_back(p1); p1->setTimeAlive(60);
-	particles_list.push_back(p2); p2->setTimeAlive(60);
-	particles_list.push_back(p3); p3->setTimeAlive(60);
-	particles_list.push_back(p4); p4->setTimeAlive(60);
-	particles_list.push_back(p5); p5->setTimeAlive(60);
-	particles_list.push_back(p6); p6->setTimeAlive(60);
+	particles_list.push_back(p1); p1->setTimeAlive(60); //pfr->addRegistry(getForceGen("GravityForce"), p1);
+	particles_list.push_back(p2); p2->setTimeAlive(60); pfr->addRegistry(getForceGen("GravityForce"), p2);
+	particles_list.push_back(p3); p3->setTimeAlive(60); pfr->addRegistry(getForceGen("GravityForce"), p3);
+	particles_list.push_back(p4); p4->setTimeAlive(60); pfr->addRegistry(getForceGen("GravityForce"), p4);
+	particles_list.push_back(p5); p5->setTimeAlive(60); pfr->addRegistry(getForceGen("GravityForce"), p5);
+	particles_list.push_back(p6); p6->setTimeAlive(60); pfr->addRegistry(getForceGen("GravityForce"), p6);
 
 }
 
