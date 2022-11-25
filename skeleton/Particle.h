@@ -21,7 +21,9 @@ public:
 	void integrate(double t); //Actualiza posicion
 	virtual bool update(double t);
 	void changeSize(double s, physx::PxTransform *pos, Vector4 c);
-	virtual Particle* clone()const;
+	void changeShapeToCube(double s, physx::PxTransform *pos, Vector4 c);
+	void changeShapeToPlane(physx::PxTransform *pos, Vector4 c);
+	virtual Particle* clone() const;
 	void clearForce();
 	void addForce(const Vector3& f);
 

@@ -253,8 +253,10 @@
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="AnchoredSpringFG.cpp" />
     <ClCompile Include="callbacks.cpp" />
     <ClCompile Include="CircleGenerator.cpp" />
+    <ClCompile Include="ElasticBandForceGen.cpp" />
     <ClCompile Include="ExplosionForceGenerator.cpp" />
     <ClCompile Include="Firework.cpp" />
     <ClCompile Include="ForceGenerator.cpp" />
@@ -270,14 +272,17 @@
     <ClCompile Include="Render\Camera.cpp" />
     <ClCompile Include="Render\Render.cpp" />
     <ClCompile Include="RocketGenerator.cpp" />
+    <ClCompile Include="SpringForceGenerator.cpp" />
     <ClCompile Include="UniformParticleGen.cpp" />
     <ClCompile Include="WhirlwindGenerator.cpp" />
     <ClCompile Include="WindGenerator.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="AnchoredSpringFG.h" />
     <ClInclude Include="callbacks.hpp" />
     <ClInclude Include="CircleGenerator.h" />
     <ClInclude Include="core.hpp" />
+    <ClInclude Include="ElasticBandForceGen.h" />
     <ClInclude Include="ExplosionForceGenerator.h" />
     <ClInclude Include="Firework.h" />
     <ClInclude Include="ForceGenerator.h" />
@@ -293,6 +298,7 @@
     <ClInclude Include="Render\Camera.h" />
     <ClInclude Include="Render\Render.h" />
     <ClInclude Include="RocketGenerator.h" />
+    <ClInclude Include="SpringForceGenerator.h" />
     <ClInclude Include="UniformParticleGen.h" />
     <ClInclude Include="WhirlwindGenerator.h" />
     <ClInclude Include="WindGenerator.h" />

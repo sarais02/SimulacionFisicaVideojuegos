@@ -172,7 +172,8 @@ void keyPress(unsigned char key, const PxTransform& camera)
 		particleSystem->generateRocketSystem(); //FUEGOS ARTIFICIALES RANDOM
 		break;
 	case 'Q':
-		particleSystem->shootFirework(Firework::BASIC); //FUEGOS ARTIFICIALES
+		//particleSystem->shootFirework(Firework::BASIC); //FUEGOS ARTIFICIALES
+		particleSystem->generateSlinky();
 		break;
 	case 'E':
 		particleSystem->shootFirework(Firework::LINEAR); //FUEGOS ARTIFICIALES
@@ -184,7 +185,8 @@ void keyPress(unsigned char key, const PxTransform& camera)
 		particleSystem->generateWhirlSystem(); //TORBELLINO
 		break;
 	case 'G':
-		particleSystem->generateGalaxy(); //GALAXIA
+		//particleSystem->generateGalaxy(); //GALAXIA
+		particleSystem->generateBuoyancy();
 		break;
 	case 'J':
 		particleSystem->generateExplosionSystem(); //EXPLOSION
@@ -196,13 +198,19 @@ void keyPress(unsigned char key, const PxTransform& camera)
 		particleSystem->activeExplosion(false);
 		break;
 	case 'C':
-		particleSystem->generateCircleSystem(); //CIRCULAR
+		//particleSystem->generateCircleSystem(); //CIRCULAR
+		particleSystem->generateElasticBand();
+		break;
+	case 'X':
+		particleSystem->generateSpringDemo(); 
 		break;
 	case '+':
-		particleSystem->increaseDesTip(Vector3(1.0, 1.0, 0.0));
+		//particleSystem->increaseDesTip(Vector3(1.0, 1.0, 0.0));
+		particleSystem->increaseConst(1.5);
 		break;
 	case '-':
-		particleSystem->increaseDesTip(Vector3(-1.0, -1.0, 0.0));
+		//particleSystem->increaseDesTip(Vector3(-1.0, -1.0, 0.0));
+		particleSystem->increaseConst(-1.5);
 		break;
 	default:
 		break;

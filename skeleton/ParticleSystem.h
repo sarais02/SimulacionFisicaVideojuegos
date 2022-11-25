@@ -7,6 +7,8 @@
 #include "Firework.h"
 #include "ParticleForceRegistry.h"
 #include "ExplosionForceGenerator.h"
+#include "SpringForceGenerator.h"
+#include "AnchoredSpringFG.h"
 
 using namespace std;
 
@@ -33,6 +35,13 @@ public:
 	void generateGalaxy();
 	void activeExplosion(bool expl) { explosion->OnActive(expl); };
 	void generateExplosionSystem();
+	void generateSpringDemo();
+	void generateElasticBand();
+	void generateSlinky();
+	void generateBuoyancy();
+	void increaseConst(double i);
+
+
 protected:
 	Vector3 bounds_max;
 	Vector3 bounds_min;
@@ -42,5 +51,6 @@ protected:
 	list<shared_ptr<ForceGenerator>> forceGen_list;
 	ExplosionForceGenerator* explosion;
 	ParticleForceRegistry* pfr;
+	shared_ptr <AnchoredSpringFG> anchored;
 	vector<Firework*> fireworks_pool;
 };

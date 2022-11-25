@@ -32,6 +32,16 @@ void Particle::changeSize(double s, physx::PxTransform *pos, Vector4 c) {
 	renderitem = new RenderItem(CreateShape(physx::PxSphereGeometry(s)), pos, c);
 }
 
+void Particle::changeShapeToCube(double s, physx::PxTransform* pos, Vector4 c) {
+	DeregisterRenderItem(renderitem);
+	renderitem = new RenderItem(CreateShape(physx::PxBoxGeometry(Vector3(s,s,s))), pos, c);
+}
+
+void Particle::changeShapeToPlane(physx::PxTransform* pos, Vector4 c) {
+	DeregisterRenderItem(renderitem);
+	renderitem = new RenderItem(CreateShape(physx::PxBoxGeometry(Vector3(50, 0.1, 50))), pos, c);
+}
+
 bool Particle::update(double t) {
 	if (isAlive(t)) { 
 		integrate(t); return true; }
