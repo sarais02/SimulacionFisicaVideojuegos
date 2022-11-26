@@ -10,6 +10,7 @@
 #include "WhirlwindGenerator.h"
 #include "ExplosionForceGenerator.h"
 #include "ElasticBandForceGen.h"
+#include "BuoyancyForceGenerator.h"
 
 ParticleSystem::ParticleSystem() {
 	gravity = Vector3(0.0, -10.0, 0.0);	
@@ -424,6 +425,15 @@ void ParticleSystem::generateSlinky() {
 }
 
 void ParticleSystem::generateBuoyancy() {
-	Particle* p1 = new Particle({ 0.0, 0.0, 0 }, { 0.0, 0.0, 0.0 }, { 0.0, 0.0, 1.0, 1.0 }, { 0.0, 0.0, 0.0 });
-	p1->changeShapeToPlane(p1->getTransform(), { 0.0, 0.0, 1.0, 1.0 });
+	
+	Particle* p2 = new Particle({ 0.0, 0.0, 0 }, { 0.0, 0.0, 0.0 }, { 1.0, 1.0, 0.0, 1.0 }, { 0.0, 0.0, 0.0 }, 0.999, 10);
+	p2->setMass(10.0);
+	p2->setTimeAlive(100000000000000000);
+	particles_list.push_back(p2);
+	pfr->addRegistry(getForceGen("GravityForce"), p2);
+
+	auto f1 = shared_ptr<ForceGenerator>(new BuoyancyForceGenerator(10, 0.05, 1000));
+	forceGen_list.push_back(f1);
+
+	pfr->addRegistry(f1, p2);
 }
