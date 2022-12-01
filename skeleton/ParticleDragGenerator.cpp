@@ -6,7 +6,7 @@ ParticleDragGenerator::ParticleDragGenerator(const float k1, const float k2): _k
 }
 
 void ParticleDragGenerator::updateForce(Particle* p, double duration) {
-	if (fabs(p->getInverseMass()) < t) return;
+	if (fabs(p->getInverseMass()) < t || !isActive()) return;
 	p->addForce(calculateDrag(p->getVelocity()));
 }
 

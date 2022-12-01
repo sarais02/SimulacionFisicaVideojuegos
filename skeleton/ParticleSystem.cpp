@@ -10,7 +10,6 @@
 #include "WhirlwindGenerator.h"
 #include "ExplosionForceGenerator.h"
 #include "ElasticBandForceGen.h"
-#include "BuoyancyForceGenerator.h"
 
 ParticleSystem::ParticleSystem() {
 	gravity = Vector3(0.0, -10.0, 0.0);	
@@ -328,42 +327,61 @@ void ParticleSystem::generateExplosionSystem() {
 
 void ParticleSystem::generateSpringDemo()
 {
-	Particle* p1 = new Particle({ -10.0, 10.0, 0 }, { 0.0, 0.0, 0.0 }, {1.0, 1.0, 1.0, 1.0}, { 0.0, 0.0, 0.0 }, 0.85);
-	Particle* p2 = new Particle({ 10.0, 10.0, 0 }, { 0.0, 0.0, 0.0 }, {0.0, 0.0, 1.0, 1.0}, { 0.0, 0.0, 0.0 }, 0.85);
-	p2->setMass(2.0);
-	p1->setTimeAlive(60);
-	p2->setTimeAlive(60);
+	if (getForceGen("WindAnchored")) {
+		getForceGen("WindAnchored")->setActive(true, 5.0);
+	}
+	else {
+		Particle* p1 = new Particle({ -10.0, 10.0, 0 }, { 0.0, 0.0, 0.0 }, { 1.0, 1.0, 1.0, 1.0 }, { 0.0, 0.0, 0.0 }, 0.85);
+		Particle* p2 = new Particle({ 10.0, 10.0, 0 }, { 0.0, 0.0, 0.0 }, { 0.0, 0.0, 1.0, 1.0 }, { 0.0, 0.0, 0.0 }, 0.85);
+		p2->setMass(2.0); p1->setMass(2.0);
+		p1->setTimeAlive(60); p2->setTimeAlive(60);
 
-	auto f1 = shared_ptr<ForceGenerator>(new SpringForceGenerator(1, 10, p2));
-	pfr->addRegistry(f1, p1);
-	pfr->addRegistry(getForceGen("GravityForce"), p1);
-	auto f2 = shared_ptr<ForceGenerator>(new SpringForceGenerator(1, 10, p1));
-	pfr->addRegistry(f2, p2);
-	pfr->addRegistry(getForceGen("GravityForce"), p2);
-	forceGen_list.push_back(f1);
-	forceGen_list.push_back(f2);
-	particles_list.push_back(p1);
-	particles_list.push_back(p2);
+		auto f1 = shared_ptr<ForceGenerator>(new SpringForceGenerator(1, 10, p2));
+		pfr->addRegistry(f1, p1);
+		//pfr->addRegistry(getForceGen("GravityForce"), p1);
+		auto f2 = shared_ptr<ForceGenerator>(new SpringForceGenerator(1, 10, p1));
+		pfr->addRegistry(f2, p2);
+		//pfr->addRegistry(getForceGen("GravityForce"), p2);
+		forceGen_list.push_back(f1);
+		forceGen_list.push_back(f2);
+		particles_list.push_back(p1);
+		particles_list.push_back(p2);
 
-	Particle* p3 = new Particle({ -10.0, 20.0, 0 }, { 0.0, 0.0, 0.0 }, { 1.0, 1.0, 1.0, 1.0 }, { 0.0, 0.0, 0.0 }, 0.85);
-	p3->setTimeAlive(60);
-	anchored = shared_ptr<AnchoredSpringFG>(new AnchoredSpringFG(10, 10, {10.0, 20.0, 0.0}));
-	pfr->addRegistry(anchored, p3);
-	forceGen_list.push_back(anchored);
-	particles_list.push_back(p3);
-	pfr->addRegistry(getForceGen("GravityForce"), p3);
+		Particle* p3 = new Particle({ -10.0, 20.0, 0 }, { 0.0, 0.0, 0.0 }, { 1.0, 1.0, 1.0, 1.0 }, { 0.0, 0.0, 0.0 }, 0.85);
+		p3->setTimeAlive(60); p3->setMass(1.0);
+		auto f3 = shared_ptr<ForceGenerator>(new AnchoredSpringFG(1, 10, { 10.0, 20.0, 0.0 })); f3->setName("Anchored");
+		auto f4 = shared_ptr<ForceGenerator>(new WindGenerator(5.0, 0.0, { 10.0, 10.0, 0.0 }, 100, {0, 20, 0})); f4->setName("WindAnchored"); f4->setActive(false);
+		pfr->addRegistry(f3, p3);
+		pfr->addRegistry(f4, p3);
+		forceGen_list.push_back(f3);
+		forceGen_list.push_back(f4);
+		particles_list.push_back(p3);
+		pfr->addRegistry(getForceGen("GravityForce"), p3);
+	}
 }
 
 void ParticleSystem::increaseConst(double i)
 {
-	if(anchored!=nullptr)
-		anchored->increaseK(i);
+	AnchoredSpringFG* b = dynamic_cast<AnchoredSpringFG*>(getForceGen("Anchored").get());
+	b->increaseK(i);
+}
+
+void ParticleSystem::increaseVolume(float v)
+{
+	BuoyancyForceGenerator* b = dynamic_cast<BuoyancyForceGenerator*>(getForceGen("Flotacion").get());
+	b->setVolume(b->getVolume() + v);
+}
+
+void ParticleSystem::increaseHeight(float h)
+{
+	BuoyancyForceGenerator* b = dynamic_cast<BuoyancyForceGenerator*>(getForceGen("Flotacion").get());
+	b->setHeight(b->getHeight() + h);
 }
 
 void ParticleSystem::generateElasticBand() {
 	
-	Particle* p1 = new Particle({ -10.0, 10.0, 0 }, { 0.0, 0.0, 0.0 }, { 1.0, 1.0, 1.0, 1.0 }, { 0.0, 0.0, 0.0 }, 0.85);
-	Particle* p2 = new Particle({ 10.0, 10.0, 0 }, { 0.0, 0.0, 0.0 }, { 0.0, 0.0, 1.0, 1.0 }, { 0.0, 0.0, 0.0 }, 0.85);
+	Particle* p1 = new Particle({ -10.0, 10.0, 0 }, { 0.0, 0.0, 0.0 }, { 194.0/255, 155.0/255, 97.0/255, 1.0 }, { 0.0, 0.0, 0.0 }, 0.85);
+	Particle* p2 = new Particle({ 10.0, 10.0, 0 }, { 0.0, 0.0, 0.0 }, { 194.0 / 255, 155.0 / 255, 97.0 / 255, 1.0 }, { 0.0, 0.0, 0.0 }, 0.85);
 	p2->setMass(2.0);
 	p1->setTimeAlive(60);
 	p2->setTimeAlive(60);
@@ -381,41 +399,43 @@ void ParticleSystem::generateElasticBand() {
 }
 
 void ParticleSystem::generateSlinky() {
-	Particle* p1 = new Particle({ 0.0, 60.0, 0 }, { 0.0, 0.0, 0.0 }, { 1.0, 1.0, 1.0, 1.0 }, { 0.0, 0.0, 0.0 }, 0.85);
-	Particle* p2 = new Particle({ 0.0, 50.0, 0 }, { 0.0, 0.0, 0.0 }, { 0.0, 0.0, 1.0, 1.0 }, { 0.0, 0.0, 0.0 }, 0.85);
-	Particle* p3 = new Particle({ 0.0, 40.0, 0 }, { 0.0, 0.0, 0.0 }, { 0.0, 0.0, 1.0, 1.0 }, { 0.0, 0.0, 0.0 }, 0.85);
-	Particle* p4 = new Particle({ 0.0, 30.0, 0 }, { 0.0, 0.0, 0.0 }, { 0.0, 0.0, 1.0, 1.0 }, { 0.0, 0.0, 0.0 }, 0.85);
-	Particle* p5 = new Particle({ 0.0, 20.0, 0 }, { 0.0, 0.0, 0.0 }, { 0.0, 0.0, 1.0, 1.0 }, { 0.0, 0.0, 0.0 }, 0.85);
-	Particle* p6 = new Particle({ 0.0, 10.0, 0 }, { 0.0, 0.0, 0.0 }, { 0.0, 0.0, 1.0, 1.0 }, { 0.0, 0.0, 0.0 }, 0.85);
 
-	auto f1 = shared_ptr<ForceGenerator>(new SpringForceGenerator(50, 10, p1)); //LA 1 CON LA 2
+	Particle* p1 = new Particle({ 0.0, 60.0, 0 }, { 0.0, 0.0, 0.0 }, { 1.0, 0.0, 0.0, 1.0 }, { 0.0, 0.0, 0.0 }, 0.85, 3);
+	Particle* p2 = new Particle({ 0.0, 55.0, 0 }, { 0.0, 0.0, 0.0 }, { 1.0, 128.0/255, 0.0, 1.0 }, { 0.0, 0.0, 0.0 }, 0.85, 3);
+	Particle* p3 = new Particle({ 0.0, 50.0, 0 }, { 0.0, 0.0, 0.0 }, { 1.0, 1.0, 0.0, 1.0 }, { 0.0, 0.0, 0.0 }, 0.85, 3);
+	Particle* p4 = new Particle({ 0.0, 45.0, 0 }, { 0.0, 0.0, 0.0 }, { 1.0, 1.0, 0.0, 1.0 }, { 0.0, 0.0, 0.0 }, 0.85, 3);
+	Particle* p5 = new Particle({ 0.0, 40.0, 0 }, { 0.0, 0.0, 0.0 }, { 191.0/255, 1.0, 0.0, 1.0 }, { 0.0, 0.0, 0.0 }, 0.85, 3);
+	Particle* p6 = new Particle({ 0.0, 35.0, 0 }, { 0.0, 0.0, 0.0 }, { 0.0, 1.0, 0.0, 1.0 }, { 0.0, 0.0, 0.0 }, 0.85, 3);
+
+	double l = 2.5;
+
+	auto f1 = shared_ptr<ForceGenerator>(new SpringForceGenerator(45, l, p1)); //LA 2 CON LA 1 
 	pfr->addRegistry(f1, p2);
-	//auto f2 = shared_ptr<ForceGenerator>(new SpringForceGenerator(45, 10, p2)); //LA 2 CON LA 1
-	//pfr->addRegistry(f2, p1);
-	auto f3 = shared_ptr<ForceGenerator>(new SpringForceGenerator(40, 10, p2)); //LA 2 CON LA 3
+	f1->setName("Slinky1");
+	auto f3 = shared_ptr<ForceGenerator>(new SpringForceGenerator(35, l, p2)); //LA 3 CON LA 2
 	pfr->addRegistry(f3, p3);
-	auto f4 = shared_ptr<ForceGenerator>(new SpringForceGenerator(35, 10, p3)); //LA 3 CON LA 2
+	auto f4 = shared_ptr<ForceGenerator>(new SpringForceGenerator(40, l, p3)); //LA 2 CON LA 3
 	pfr->addRegistry(f4, p2);
-	auto f5 = shared_ptr<ForceGenerator>(new SpringForceGenerator(30, 10, p3)); //LA 3 CON LA 4
+	auto f5 = shared_ptr<ForceGenerator>(new SpringForceGenerator(25, l, p3)); //LA 4 CON LA 3
 	pfr->addRegistry(f5, p4);
-	auto f6 = shared_ptr<ForceGenerator>(new SpringForceGenerator(25, 10, p4)); //LA 4 CON LA 3
+	auto f6 = shared_ptr<ForceGenerator>(new SpringForceGenerator(30, l, p4)); //LA 3 CON LA 4
 	pfr->addRegistry(f6, p3);
-	auto f7 = shared_ptr<ForceGenerator>(new SpringForceGenerator(20, 10, p4)); //LA 4 CON LA 5
+	auto f7 = shared_ptr<ForceGenerator>(new SpringForceGenerator(15, l, p4)); //LA 5 CON LA 4
 	pfr->addRegistry(f7, p5);
-	auto f8 = shared_ptr<ForceGenerator>(new SpringForceGenerator(15, 10, p5)); //LA 5 CON LA 4
+	auto f8 = shared_ptr<ForceGenerator>(new SpringForceGenerator(20, l, p5)); //LA 4 CON LA 5
 	pfr->addRegistry(f8, p4);
-	auto f9 = shared_ptr<ForceGenerator>(new SpringForceGenerator(10, 10, p5)); //LA 5 CON LA 6
+	auto f9 = shared_ptr<ForceGenerator>(new SpringForceGenerator(5, l, p5)); //LA 6 CON LA 5
 	pfr->addRegistry(f9, p6);
-	auto f10 = shared_ptr<ForceGenerator>(new SpringForceGenerator(5, 10, p6)); //LA 6 CON LA 5
+	auto f10 = shared_ptr<ForceGenerator>(new SpringForceGenerator(10, l, p6)); //LA 5 CON LA 6
 	pfr->addRegistry(f10, p5);
 	
 	forceGen_list.push_back(f1); forceGen_list.push_back(f6);
-	/*forceGen_list.push_back(f2);*/ forceGen_list.push_back(f7);
+	forceGen_list.push_back(f7); forceGen_list.push_back(f10);
 	forceGen_list.push_back(f3); forceGen_list.push_back(f8);
 	forceGen_list.push_back(f4); forceGen_list.push_back(f9);
-	forceGen_list.push_back(f5); forceGen_list.push_back(f10);
+	forceGen_list.push_back(f5);
 
-	particles_list.push_back(p1); p1->setTimeAlive(60); //pfr->addRegistry(getForceGen("GravityForce"), p1);
+	particles_list.push_back(p1); p1->setTimeAlive(60); 
 	particles_list.push_back(p2); p2->setTimeAlive(60); pfr->addRegistry(getForceGen("GravityForce"), p2);
 	particles_list.push_back(p3); p3->setTimeAlive(60); pfr->addRegistry(getForceGen("GravityForce"), p3);
 	particles_list.push_back(p4); p4->setTimeAlive(60); pfr->addRegistry(getForceGen("GravityForce"), p4);
@@ -426,14 +446,33 @@ void ParticleSystem::generateSlinky() {
 
 void ParticleSystem::generateBuoyancy() {
 	
-	Particle* p2 = new Particle({ 0.0, 0.0, 0 }, { 0.0, 0.0, 0.0 }, { 1.0, 1.0, 0.0, 1.0 }, { 0.0, 0.0, 0.0 }, 0.999, 10);
-	p2->setMass(10.0);
+	auto s = shared_ptr<ParticleGenerator>(new GausianParticleGen({ 0,0,0 }, { 15,0,15 }, 3.0, "Flotacion"));
+	particleGen_list.push_back(s);
+	Particle* p1 = new Particle({ 0.0, 0.0, 0 }, { 0.0, 0.0, 0.0 }, { 1.0, 1.0, 0.0, 1.0 }, { 0.0, 0.0, 0.0 }, 0.999, 4);
+	p1->setMass(10.0);
+	p1->setTimeAlive(100.0);
+	s->setParticle(p1);
+	s->setNParticles(8);
+	s->addParticleForceRegistry(pfr);
+	
+	pfr->addRegistry(getForceGen("GravityForce"), p1);
+
+	auto f1 = shared_ptr<BuoyancyForceGenerator>(new BuoyancyForceGenerator(4, 0.03, 1000)); //v=0.02 equilibrio, v=0.01 se hunde
+	forceGen_list.push_back(f1);
+
+	pfr->addRegistry(f1, p1);
+	
+
+	/*Particle* p2 = new Particle({ 50.0, 0.0, -50 }, { 0.0, 0.0, 0.0 }, { 1.0, 1.0, 0.0, 1.0 }, { 0.0, 0.0, 0.0 }, 0.999, 10);
+	Particle* oil = new Particle({ 50.0, 0.0, -50 }, { 0.0, 0.0, 0.0 }, { 134.0 / 255, 137.0 / 255, 93.0 / 255, 1.0 }, { 0.0, 0.0, 0.0 }, 0.999, 10);
+	oil->changeShapeToPlane(oil->getTransform(), Vector4( 181 / 255.0, 179 / 255.0, 92 / 255.0, 1.0 ));
+	p2->setMass(3.0);
 	p2->setTimeAlive(100000000000000000);
 	particles_list.push_back(p2);
 	pfr->addRegistry(getForceGen("GravityForce"), p2);
 
-	auto f1 = shared_ptr<ForceGenerator>(new BuoyancyForceGenerator(10, 0.05, 1000));
-	forceGen_list.push_back(f1);
+	auto f2 = shared_ptr<BuoyancyForceGenerator>(new BuoyancyForceGenerator(10, 0.03, 0.9)); f2->setLiquidParticle(oil);
+	forceGen_list.push_back(f2);
 
-	pfr->addRegistry(f1, p2);
+	pfr->addRegistry(f2, p2);*/
 }

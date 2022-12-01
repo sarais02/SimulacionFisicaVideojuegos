@@ -15,6 +15,8 @@ BuoyancyForceGenerator::~BuoyancyForceGenerator()
 
 void BuoyancyForceGenerator::updateForce(Particle* p, double t)
 {
+    if (!isActive()) return;
+
     float h = p->getPosition().y;
     float h0 = liquid_particle->getPosition().y;
 

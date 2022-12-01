@@ -9,7 +9,7 @@ ExplosionForceGenerator::ExplosionForceGenerator(const double K, int R, int c, V
 
 void ExplosionForceGenerator::updateForce(Particle* p, double duration)
 {
-	if (fabs(p->getInverseMass()) < t||!active) return;
+	if (fabs(p->getInverseMass()) < t || !isActive()) return;
 
 	currentTime += duration;
 	if (currentTime > maxTime) currentTime = maxTime;

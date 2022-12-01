@@ -7,6 +7,8 @@ SpringForceGenerator::SpringForceGenerator(double k, double resting_lenght, Part
 
 void SpringForceGenerator::updateForce(Particle* p, double duration)
 {
+	if (!isActive()) return;
+
 	Vector3 f = other_->getPosition() - p->getPosition();
 
 	const float lenght = f.normalize();

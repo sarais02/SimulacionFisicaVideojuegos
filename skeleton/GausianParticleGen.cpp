@@ -40,6 +40,7 @@ GausianParticleGen::GausianParticleGen(Vector3 desTip_vel_, Vector3 desTip_pos_,
 		 }
 		 l.push_back(p);
 	 }
+	 if (name == "Flotacion") changeActive();
  }
 
  void GausianParticleGen::increaseDesTipPos(Vector3 increase)

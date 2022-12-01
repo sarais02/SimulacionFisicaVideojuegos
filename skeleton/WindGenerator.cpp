@@ -9,7 +9,7 @@ WindGenerator::WindGenerator(const float k1, const float k2, Vector3 v, float ra
 
 void WindGenerator::updateForce(Particle* p, double duration)
 {
-	if (fabs(p->getInverseMass()) < 1e-10 || !inRange(p->getPosition())) return;
+	if (fabs(p->getInverseMass()) < 1e-10 || !isActive() || !inRange(p->getPosition()) ||  !canUpdateForce(duration)) return;
 
 	Vector3 v = p->getVelocity()-vel;
 	p->addForce(calculateDrag(v));

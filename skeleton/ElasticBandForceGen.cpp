@@ -5,6 +5,8 @@ ElasticBandForceGen::ElasticBandForceGen(double k, double resting_lenght, Partic
 }
 
 void ElasticBandForceGen::updateForce(Particle* p, double duration) {
+	if (!isActive()) return;
+	
 	Vector3 f = p->getPosition();
 	f -= other_->getPosition();
 

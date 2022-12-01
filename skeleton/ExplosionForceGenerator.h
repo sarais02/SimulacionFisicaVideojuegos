@@ -16,5 +16,5 @@ protected:
 	const double ve = 343;
 	int R;
 	int c;
-	bool active;
+	
 };

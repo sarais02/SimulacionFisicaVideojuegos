@@ -9,6 +9,7 @@
 #include "ExplosionForceGenerator.h"
 #include "SpringForceGenerator.h"
 #include "AnchoredSpringFG.h"
+#include "BuoyancyForceGenerator.h"
 
 using namespace std;
 
@@ -40,6 +41,8 @@ public:
 	void generateSlinky();
 	void generateBuoyancy();
 	void increaseConst(double i);
+	void increaseVolume(float v);
+	void increaseHeight(float h);
 
 
 protected:
@@ -51,6 +54,5 @@ protected:
 	list<shared_ptr<ForceGenerator>> forceGen_list;
 	ExplosionForceGenerator* explosion;
 	ParticleForceRegistry* pfr;
-	shared_ptr <AnchoredSpringFG> anchored;
 	vector<Firework*> fireworks_pool;
 };

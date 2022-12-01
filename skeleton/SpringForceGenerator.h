@@ -11,6 +11,10 @@ public:
 	inline void setK(double k) {
 		k_ = k;
 	}
+	virtual void changeActive() {
+		active = !active;
+		if (!active) { other_ = nullptr; delete other_; }
+	}
 
 protected:
 	double k_;

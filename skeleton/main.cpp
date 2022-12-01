@@ -211,6 +211,23 @@ void keyPress(unsigned char key, const PxTransform& camera)
 	case '-':
 		//particleSystem->increaseDesTip(Vector3(-1.0, -1.0, 0.0));
 		particleSystem->increaseConst(-1.5);
+	case '1':
+		particleSystem->increaseConst(1.5);
+		break;
+	case '2':
+		particleSystem->increaseConst(-1.5);
+		break;
+	case '8':
+		particleSystem->increaseVolume(1.0f);
+		break;
+	case '9':
+		particleSystem->increaseVolume(-1.0f);
+		break;
+	case '/':
+		particleSystem->increaseHeight(1.0f);
+		break;
+	case '*':
+		particleSystem->increaseHeight(-1.0f);
 		break;
 	default:
 		break;
