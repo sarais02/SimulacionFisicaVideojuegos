@@ -6,9 +6,12 @@
 #include <string>
 #include <iostream>
 
+using namespace physx;
+
 class ForceGenerator {
 public:
 	virtual void updateForce(Particle* p, double duration) = 0;
+	virtual void updateForce(PxRigidDynamic* p, double duration) = 0;
 	virtual void setName(string n) {
 		_name = n;
 	}

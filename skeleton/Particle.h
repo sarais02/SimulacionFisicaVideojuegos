@@ -121,7 +121,4 @@ protected:
 	double timeAlive, iniTimeAlive;
 	double size_;
 	bool isFire_;
-
-	
 };
-

@@ -15,6 +15,14 @@ void WindGenerator::updateForce(Particle* p, double duration)
 	p->addForce(calculateDrag(v));
 }
 
+void WindGenerator::updateForce(PxRigidDynamic* p, double duration)
+{
+	if (fabs(p->getInvMass()) < 1e-10 || !isActive() || !inRange(p->getGlobalPose().p) || !canUpdateForce(duration)) return;
+
+	Vector3 v = p->getLinearVelocity() - vel;
+	p->addForce(calculateDrag(v));
+}
+
 bool WindGenerator::inRange(Vector3 pos)
 {
 	return (pos.x < maxPositive.x && pos.x > maxNegative.x

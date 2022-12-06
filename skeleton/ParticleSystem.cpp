@@ -38,9 +38,6 @@ ParticleSystem::ParticleSystem() {
 	forceGen_list.push_back(explo); explosion = dynamic_cast<ExplosionForceGenerator*>(explo.get());
 	
 	particles_list = list<Particle*>();
-	/*auto xy = new Particle(Vector3(0, 40, 0), Vector3(0, 0, 0), Vector4(1,1,1,1), Vector3(0, 0, 0), 0.9999, 1.0, 5); 
-	xy->setTimeAlive(100000);
-	particles_list.push_back(xy);*/
 
 	shared_ptr<ParticleGenerator>it = shared_ptr<ParticleGenerator>(new GausianParticleGen(Vector3(2.50, -2.0, 2.50), Vector3(.0, .0, .0), 1.0, "GaussianGenerator"));
 	particleGen_list.push_back(it);
@@ -54,8 +51,6 @@ ParticleSystem::ParticleSystem() {
 	particleGen_list.push_back(shared_ptr<ParticleGenerator>(aux)); (*aux).changeActive();
 	generateFireworkSystem();
 	aux->setTypesRockets(fireworks_pool);
-
-	//pfr.addRegistry(gravityFoceGen, xy);
 }
 
 ParticleSystem::~ParticleSystem() {

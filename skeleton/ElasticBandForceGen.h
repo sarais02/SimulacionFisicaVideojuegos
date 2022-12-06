@@ -6,4 +6,5 @@ public:
 	ElasticBandForceGen(double k, double resting_lenght, Particle* p);
 	~ElasticBandForceGen() { delete other_; };
 	virtual void updateForce(Particle* p, double duration);
+	virtual void updateForce(PxRigidDynamic* p, double duration);
 };

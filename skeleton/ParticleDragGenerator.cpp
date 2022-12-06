@@ -10,6 +10,12 @@ void ParticleDragGenerator::updateForce(Particle* p, double duration) {
 	p->addForce(calculateDrag(p->getVelocity()));
 }
 
+void ParticleDragGenerator::updateForce(PxRigidDynamic* p, double duration)
+{
+	if (fabs(p->getInvMass()) < t || !isActive()) return;
+	p->addForce(calculateDrag(p->getLinearVelocity()));
+}
+
 Vector3 ParticleDragGenerator::calculateDrag(Vector3 v) {
 	float drag_coef = v.normalize();
 	Vector3 dragF;

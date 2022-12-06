@@ -14,6 +14,14 @@ void WhirlwindGenerator::updateForce(Particle* p, double duration)
 	p->addForce(calculateDrag(v));
 }
 
+void WhirlwindGenerator::updateForce(PxRigidDynamic* p, double duration)
+{
+	if (fabs(p->getInvMass()) < t || !isActive()) return;
+	calculateVelocityWind(p->getGlobalPose().p);
+	Vector3 v = p->getLinearVelocity() - vel;
+	p->addForce(calculateDrag(v));
+}
+
 void WhirlwindGenerator::calculateVelocityWind(Vector3 pos)
 {
 	vel.x = k * (-(pos.z - centre.z));

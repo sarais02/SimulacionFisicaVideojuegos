@@ -29,6 +29,8 @@
     <ClCompile Include="AnchoredSpringFG.cpp" />
     <ClCompile Include="ElasticBandForceGen.cpp" />
     <ClCompile Include="BuoyancyForceGeneratorcpp.cpp" />
+    <ClCompile Include="WorldManager.cpp" />
+    <ClCompile Include="GaussianSolidRigidGen.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="core.hpp" />
@@ -60,6 +62,10 @@
     <ClInclude Include="AnchoredSpringFG.h" />
     <ClInclude Include="ElasticBandForceGen.h" />
     <ClInclude Include="BuoyancyForceGenerator.h" />
+    <ClInclude Include="WorldManager.h" />
+    <ClInclude Include="RigidForceRegistry.h" />
+    <ClInclude Include="SolidRigidGenerator.h" />
+    <ClInclude Include="GaussianSolidRigidGen.h" />
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Render">

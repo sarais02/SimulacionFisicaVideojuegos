@@ -18,3 +18,17 @@ void SpringForceGenerator::updateForce(Particle* p, double duration)
 
 	p->addForce(f);
 }
+
+void SpringForceGenerator::updateForce(PxRigidDynamic* p, double duration)
+{
+	if (!isActive()) return;
+
+	Vector3 f = other_->getPosition() - p->getGlobalPose().p;
+
+	const float lenght = f.normalize();
+	const float delta_x = lenght - resting_lenght_;
+
+	f *= delta_x * k_;
+
+	p->addForce(f);
+}

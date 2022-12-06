@@ -7,6 +7,7 @@ public:
 	virtual ~BuoyancyForceGenerator();
 
 	virtual void updateForce(Particle* p, double t);
+	virtual void updateForce(PxRigidDynamic* p, double t);
 	inline void setLiquidParticle(Particle* p) {
 		liquid_particle = p;
 	}

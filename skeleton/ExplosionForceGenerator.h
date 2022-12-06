@@ -8,6 +8,7 @@ class ExplosionForceGenerator :public ForceGenerator {
 public:
 	ExplosionForceGenerator(const double K, int R, int c, Vector3 centre, double time);
 	virtual void updateForce(Particle* p, double duration);
+	virtual void updateForce(PxRigidDynamic* p, double duration);
 	void OnActive(bool activee) { active = activee; currentTime = 0; };
 protected:
 	Vector3 vel;

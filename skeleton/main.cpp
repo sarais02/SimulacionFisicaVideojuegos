@@ -11,6 +11,7 @@
 #include "Particle.h"
 #include "Proyectil.h"
 #include "ParticleSystem.h"
+#include "WorldManager.h"
 
 #include <iostream>
 
@@ -37,6 +38,7 @@ Particle* particle = NULL;
 vector<Particle*>proyectiles;
 //CREAR PARTICLE SYSTEM
 ParticleSystem* particleSystem;
+WorldManager* worldManager;
 // Initialize physics engine
 // Se define todo lo que queremos que aparezca en la escena
 // Reglas del mundo fisico
@@ -63,6 +65,7 @@ void initPhysics(bool interactive)
 	sceneDesc.simulationEventCallback = &gContactReportCallback;
 	gScene = gPhysics->createScene(sceneDesc);
 	particleSystem = new ParticleSystem();
+	worldManager = new WorldManager(gScene, gPhysics);
 	srand(time(NULL));
 	//particle = new Particle(Vector3(0.0,20.0,0), Vector3(5.0,15.0,0.0), Vector3(0.0, -9.8, 0.0));
 }
@@ -86,8 +89,7 @@ void stepPhysics(bool interactive, double t)
 		//if (shot->pos.y < 0.0f || shot->startTime + 5000 < GetLastFrame() || shot->particle.getPosition().z > 200.0f) {
 	}
 	particleSystem->update(t);
-	/*if(particle!=nullptr)
-		particle->integrate(t);*/
+	worldManager->update(t);
 }
 
 // Function to clean data
@@ -126,8 +128,6 @@ void keyPress(unsigned char key, const PxTransform& camera)
 
 	switch(toupper(key))
 	{
-	//case 'B': break;
-	//case ' ':	break;
 	case ' ':
 	{
 		break;
@@ -160,74 +160,75 @@ void keyPress(unsigned char key, const PxTransform& camera)
 		break;
 	}
 	case 'M':
-		particleSystem->generateHosepipeSystem(); //MANGUERA
+		//particleSystem->generateHosepipeSystem(); //MANGUERA
+		worldManager->generateSystem();
 		break;
 	case 'N':
-		particleSystem->generateFogSystem();	//NIEBLA
+		//particleSystem->generateFogSystem();	//NIEBLA
 		break;
 	case 'L':
-		particleSystem->generateFlamesSystem(); //FUEGO
+		//particleSystem->generateFlamesSystem(); //FUEGO
 		break;
 	case 'R':
-		particleSystem->generateRocketSystem(); //FUEGOS ARTIFICIALES RANDOM
+		//particleSystem->generateRocketSystem(); //FUEGOS ARTIFICIALES RANDOM
 		break;
 	case 'Q':
 		//particleSystem->shootFirework(Firework::BASIC); //FUEGOS ARTIFICIALES
-		particleSystem->generateSlinky();
+		//particleSystem->generateSlinky();
 		break;
 	case 'E':
-		particleSystem->shootFirework(Firework::LINEAR); //FUEGOS ARTIFICIALES
+		//particleSystem->shootFirework(Firework::LINEAR); //FUEGOS ARTIFICIALES
 		break;
 	case 'T':
-		particleSystem->shootFirework(Firework::CIRCULAR); //FUEGOS ARTIFICIALES
+		//particleSystem->shootFirework(Firework::CIRCULAR); //FUEGOS ARTIFICIALES
 		break;
 	case 'U':
-		particleSystem->generateWhirlSystem(); //TORBELLINO
+		//particleSystem->generateWhirlSystem(); //TORBELLINO
 		break;
 	case 'G':
 		//particleSystem->generateGalaxy(); //GALAXIA
-		particleSystem->generateBuoyancy();
+		//particleSystem->generateBuoyancy();
 		break;
 	case 'J':
-		particleSystem->generateExplosionSystem(); //EXPLOSION
+		//particleSystem->generateExplosionSystem(); //EXPLOSION
 		break;
 	case 'Y':
-		particleSystem->activeExplosion(true);
+		//particleSystem->activeExplosion(true);
 		break;
 	case 'I':
-		particleSystem->activeExplosion(false);
+		//particleSystem->activeExplosion(false);
 		break;
 	case 'C':
 		//particleSystem->generateCircleSystem(); //CIRCULAR
-		particleSystem->generateElasticBand();
+		//particleSystem->generateElasticBand();
 		break;
 	case 'X':
-		particleSystem->generateSpringDemo(); 
+		//particleSystem->generateSpringDemo(); 
 		break;
 	case '+':
 		//particleSystem->increaseDesTip(Vector3(1.0, 1.0, 0.0));
-		particleSystem->increaseConst(1.5);
+		//particleSystem->increaseConst(1.5);
 		break;
 	case '-':
 		//particleSystem->increaseDesTip(Vector3(-1.0, -1.0, 0.0));
-		particleSystem->increaseConst(-1.5);
+		//particleSystem->increaseConst(-1.5);
 	case '1':
-		particleSystem->increaseConst(1.5);
+		//particleSystem->increaseConst(1.5);
 		break;
 	case '2':
-		particleSystem->increaseConst(-1.5);
+		//particleSystem->increaseConst(-1.5);
 		break;
 	case '8':
-		particleSystem->increaseVolume(1.0f);
+		//particleSystem->increaseVolume(1.0f);
 		break;
 	case '9':
-		particleSystem->increaseVolume(-1.0f);
+		//particleSystem->increaseVolume(-1.0f);
 		break;
 	case '/':
-		particleSystem->increaseHeight(1.0f);
+		//particleSystem->increaseHeight(1.0f);
 		break;
 	case '*':
-		particleSystem->increaseHeight(-1.0f);
+		//particleSystem->increaseHeight(-1.0f);
 		break;
 	default:
 		break;

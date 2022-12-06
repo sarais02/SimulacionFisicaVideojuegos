@@ -8,6 +8,7 @@ public:
 	SpringForceGenerator(double k, double resting_lenght, Particle* other);
 	SpringForceGenerator(double k, double resting_lenght, Vector3 v);
 	virtual void updateForce(Particle* p, double duration);
+	virtual void updateForce(PxRigidDynamic* p, double duration);
 	inline void setK(double k) {
 		k_ = k;
 	}
