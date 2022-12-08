@@ -1,71 +1,62 @@
 #include "GaussianSolidRigidGen.h"
-#include <algorithm>
-#include <iostream>
+#include <math.h>
+#include <list>
+#include <Time.h>
+#include <random>
 
-GaussianSolidRigidGen::GaussianSolidRigidGen(Vector3 desTip_pos_, Vector3 desTip_vel_, double desTip_t_, PxScene* gScene_, PxPhysics* gPhysics_, WorldManager* wm) {
-	setName("BASTA");
+GaussianSolidRigidGen::GaussianSolidRigidGen(WorldManager* wm, typeRigid typee, Vector3 desTip_pos_, Vector3 desTip_vel_, double desTip_t_, PxScene* gScene_, PxPhysics* gPhysics_, bool rgb_, double masss)
+{
+	worldmanager = wm; 
+	type = typee;
+	desTip_pos = desTip_pos_; 
+	desTip_vel = desTip_vel_;
+	mass = masss;
 	gScene = gScene_;
 	gPhysics = gPhysics_;
-	desTip_pos = desTip_pos_;
-	desTip_vel = desTip_vel_;
-	desTip_t = desTip_t_;
-	gnd = default_random_engine(r());
-	SolidRigid* rg = new SolidRigid();
-	setSolidRigid(rg);
-	is_Gaussian = true;
 	active = true;
-	isDynamic_ = false;
-	worldmanager = wm;
+	rgb = rgb_;
 }
 
-void GaussianSolidRigidGen::generateSolidRigid(list<SolidRigid*>& l)
-{
-	for (int i = 0; i < nParticles && worldmanager->getNParticles() <worldmanager->getMaxParticles(); i++) {
+GaussianSolidRigidGen::~GaussianSolidRigidGen() {
+	setSolidRigid(nullptr);
+	worldmanager = nullptr;
+	pfr = nullptr;
+}
+
+void GaussianSolidRigidGen::generateSolidRigid(list<SolidRigid*>& l) {
+
+	Vector3 velFinal, posmolde = molde->solidType->getGlobalPose().p;
+	auto di = static_cast<PxRigidDynamic*>(molde->solidType);
+
+	for (int i = 0; i < nParticles && worldmanager->getNParticles()<worldmanager->getMaxParticles(); i++) {
+		
 		auto posi = Vector3(desTip_pos.x * d(gnd), desTip_pos.y * d(gnd), desTip_pos.z * d(gnd));
 		auto v = Vector3(desTip_vel.x * d(gnd), desTip_vel.y * d(gnd), desTip_vel.z * d(gnd));
 
-		SolidRigid* rg = new SolidRigid();
-		rg->solidType = molde->solidType; rg->timeAlive = molde->timeAlive; /*rg->item = molde->item;*/
+		if (rgb) {
+			auto r = rand() % 255 + 0;
+			auto g = rand() % 255 + 0;
+			auto b = rand() % 255 + 0;
+			molde->item->color = Vector4(r / 255.0, g / 255.0, b / 255.0, 1.0);
+		}
 
-		Vector3 velFinal;
-		Vector3 posFinal = Vector3(molde->solidType->getGlobalPose().p.x + posi.x, molde->solidType->getGlobalPose().p.y + posi.y, molde->solidType->getGlobalPose().p.z + posi.z);
+		Vector3 posFinal = Vector3(posmolde.x + posi.x, posmolde.y + posi.y, posmolde.z + posi.z);
 
-		PxRigidDynamic* di = static_cast<PxRigidDynamic*>(molde->solidType);
-		if (di != nullptr) {
+		SolidRigid* nueva = clone(molde);
+
+
+		nueva->solidType->setGlobalPose(PxTransform(posFinal));
+		if (type == DYNAMIC) {
 			velFinal = Vector3(di->getLinearVelocity().x + v.x, di->getLinearVelocity().y + v.y, di->getLinearVelocity().z + v.z);
-			PxRigidDynamic* new_solid;
-			new_solid = gPhysics->createRigidDynamic(PxTransform(posFinal));
-			new_solid->setLinearVelocity(velFinal);
-			new_solid->setAngularVelocity({ 0,0,0 });
-			new_solid->setMass(di->getMass());
-			//PxPhysics::createMaterial(0.5, 0.5, 0.1);
-			
-			Vector3 size = Vector3(1.0 + d(gnd), 1.0 + d(gnd), 1.0 + d(gnd));
+			auto aux = static_cast<PxRigidDynamic*>(nueva->solidType);
+			aux->setMass(di->getMass() + abs(d(gnd) * mass));
+			aux->setLinearVelocity(velFinal);
+		}
 
-			auto shape = molde->item->shape;
-			new_solid->attachShape(*shape);
-			//new_solid->setMassSpaceInertiaTensor(/*{ size.y * size.z,size.x * size.z,size.x * size.y }*/PxVec3(0.f));
-			
-			auto item = new RenderItem(shape, new_solid, molde->item->color);
-			gScene->addActor(*new_solid);
-			rg->item = item;
-			isDynamic_ = true;
-		}
-		else { 
-			velFinal = { 0,0,0 }; 
-			PxRigidStatic* obj = gPhysics->createRigidStatic(PxTransform(posFinal));
-			auto shape = molde->item->shape;
-			obj->attachShape(*shape);
-			auto item = new RenderItem(shape, obj, molde->item->color);
-			gScene->addActor(*obj);
-			rg->item = item;
-		}
-		l.push_back(rg);
 		worldmanager->addParticles();
+		l.push_back(nueva);
 	}
-	//changeActive();
 }
-
 void GaussianSolidRigidGen::increaseDesTipPos(Vector3 increase)
 {
 	desTip_pos += increase;

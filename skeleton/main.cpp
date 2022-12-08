@@ -88,7 +88,7 @@ void stepPhysics(bool interactive, double t)
 			shot->integrate(t);
 		//if (shot->pos.y < 0.0f || shot->startTime + 5000 < GetLastFrame() || shot->particle.getPosition().z > 200.0f) {
 	}
-	particleSystem->update(t);
+	//particleSystem->update(t);
 	worldManager->update(t);
 }
 
@@ -119,6 +119,7 @@ void cleanupPhysics(bool interactive)
 		}
 	}
 	delete particleSystem;
+	delete worldManager;
 }
 
 // Function called when a key is pressed
@@ -163,8 +164,12 @@ void keyPress(unsigned char key, const PxTransform& camera)
 		//particleSystem->generateHosepipeSystem(); //MANGUERA
 		worldManager->generateSystem();
 		break;
+	case 'V':
+		worldManager->changeActiveForces();
+		break;
 	case 'N':
 		//particleSystem->generateFogSystem();	//NIEBLA
+		worldManager->generateTorqueSystem();
 		break;
 	case 'L':
 		//particleSystem->generateFlamesSystem(); //FUEGO

@@ -275,6 +275,7 @@
     <ClCompile Include="Render\Render.cpp" />
     <ClCompile Include="RocketGenerator.cpp" />
     <ClCompile Include="SpringForceGenerator.cpp" />
+    <ClCompile Include="TorqueForce.cpp" />
     <ClCompile Include="UniformParticleGen.cpp" />
     <ClCompile Include="WhirlwindGenerator.cpp" />
     <ClCompile Include="WindGenerator.cpp" />
@@ -306,6 +307,7 @@
     <ClInclude Include="RocketGenerator.h" />
     <ClInclude Include="SolidRigidGenerator.h" />
     <ClInclude Include="SpringForceGenerator.h" />
+    <ClInclude Include="TorqueForce.h" />
     <ClInclude Include="UniformParticleGen.h" />
     <ClInclude Include="WhirlwindGenerator.h" />
     <ClInclude Include="WindGenerator.h" />
