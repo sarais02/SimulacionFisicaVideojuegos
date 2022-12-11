@@ -54,8 +54,8 @@ public:
 	SolidRigid* clone(SolidRigid* rg) {
 
 		SolidRigid* nuevo = new SolidRigid();
-		/*double t = rg->tam;*/
-		nuevo->timeAlive = rg->timeAlive; /*nuevo->tam = t;*/
+		double t = rg->tam;
+		nuevo->timeAlive = rg->timeAlive; nuevo->tam = t;
 		
 		auto pos = rg->solidType->getGlobalPose().p;
 		auto di = static_cast<PxRigidDynamic*>(rg->solidType);
@@ -69,20 +69,22 @@ public:
 				auto x = gPhysics->createRigidDynamic(PxTransform(pos));
 				x->setLinearVelocity(di->getLinearVelocity());
 				x->setAngularVelocity(di->getAngularVelocity());
-				x->setMass(di->getMass());
-				//x->setMassSpaceInertiaTensor(PxVec3(0.f));
+				//x->setMass(di->getMass());
+				x->setMassSpaceInertiaTensor(PxVec3(5.f));
 				//x->setMassSpaceInertiaTensor(PxVec3(0.f, 0.f, 10.f));
 				for (int i = 0; i < molde->forcesNames.size(); i++) {
 					nuevo->forcesNames.push_back(molde->forcesNames[i]);
 					pfr->addRegistry(pfr->getForceGenenarion(molde->forcesNames[i]), x);
 				}
+				PxRigidBodyExt::setMassAndUpdateInertia(*x, 60.0);
+				//x->setLinearDamping(0.9999);
 				new_solid = x;
 			}
 			else {
 				new_solid = gPhysics->createRigidDynamic(PxTransform(pos));
 			}
 
-			shape = CreateShape(PxSphereGeometry(2.0));
+			shape = CreateShape(PxSphereGeometry(/*2.0*/molde->tam));
 			break;
 
 		case physx::PxGeometryType::eBOX:
@@ -90,7 +92,7 @@ public:
 				auto x = gPhysics->createRigidDynamic(PxTransform(pos));
 				x->setLinearVelocity(di->getLinearVelocity());
 				x->setAngularVelocity(di->getAngularVelocity());
-				x->setMass(di->getMass());
+				//x->setMass(di->getMass());
 				//x->setMassSpaceInertiaTensor(PxVec3(0.f));
 				//x->setMassSpaceInertiaTensor(PxVec3(0.f, 0.f, 10.f));
 				for (int i = 0; i < molde->forcesNames.size(); i++) {
@@ -103,7 +105,7 @@ public:
 				new_solid = gPhysics->createRigidDynamic(PxTransform(pos));
 			}
 
-			shape = CreateShape(PxBoxGeometry(Vector3(3.5, 3.5, 3.5)));
+			shape = CreateShape(PxBoxGeometry(Vector3(3.5, 3.5, 3.5)), gPhysics->createMaterial(10, 10, 0.2));
 			break;
 		}
 		//guardo las cosas

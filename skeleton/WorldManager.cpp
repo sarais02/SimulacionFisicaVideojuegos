@@ -14,7 +14,7 @@ WorldManager::WorldManager(PxScene* gScene, PxPhysics* gPhysics) :gScene(gScene)
 	forces_list = list<shared_ptr<ForceGenerator>>();
 	generators_list = list<shared_ptr<SolidRigidGenerator>>();
 
-	max_Particles = 1500;
+	max_Particles = 300;
 	currentNParticles = 0;
 
 	rfr = new RigidForceRegistry();
@@ -163,11 +163,13 @@ void WorldManager::generateSystem()
 
 		auto shape = CreateShape(PxSphereGeometry(size));
 		molde->attachShape(*shape);
+		PxRigidBodyExt::setMassAndUpdateInertia(*molde, 3.0);
+		molde->setLinearDamping(0.999);
 		//new_solid->setMassSpaceInertiaTensor({ size.y * size.z,size.x * size.z,size.x * size.y });
 		auto iten = new RenderItem(shape, molde, { 0,0,1,1 });
 
 		SolidRigid* rg = new SolidRigid();
-		rg->solidType = molde; rg->timeAlive = 15; rg->item = iten; /*rg->tam = size*/;
+		rg->solidType = molde; rg->timeAlive = 15; rg->item = iten; rg->tam = size;
 		s->setSolidRigid(rg);
 		s->addParticleForceRegistry(rfr);
 		rfr->addRegistry(getForceGen("Viento"), molde);
@@ -193,7 +195,8 @@ void WorldManager::generateTorqueSystem()
 		molde->setMass(60);
 
 		double size = 3.5;
-		PxShape* shape = CreateShape(PxBoxGeometry(Vector3(size, size, size)));
+
+		PxShape* shape = CreateShape(PxBoxGeometry(Vector3(size, size, size)), gPhysics->createMaterial(0.5, 0.5, 0.2));
 		//auto shape = CreateShape(PxSphereGeometry(size));
 		molde->attachShape(*shape);
 		

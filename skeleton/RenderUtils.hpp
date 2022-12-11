@@ -8,6 +8,8 @@ class RenderItem;
 void RegisterRenderItem(const RenderItem* _item);
 void DeregisterRenderItem(const RenderItem* _item);
 
+using namespace physx;
+
 class RenderItem
 {
 public:
@@ -62,6 +64,6 @@ public:
 double GetLastTime();
 Camera* GetCamera();
 
-physx::PxShape* CreateShape(const physx::PxGeometry& geo); //Para crear formas de geometria: PxSphereGeometry, PxBoxGeometry, PxCapsuleGeometry
+physx::PxShape* CreateShape(const physx::PxGeometry& geo, const physx::PxMaterial* mat=nullptr); //Para crear formas de geometria: PxSphereGeometry, PxBoxGeometry, PxCapsuleGeometry
 
 #endif

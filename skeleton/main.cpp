@@ -54,7 +54,8 @@ void initPhysics(bool interactive)
 
 	gPhysics = PxCreatePhysics(PX_PHYSICS_VERSION, *gFoundation, PxTolerancesScale(),true,gPvd);
 
-	gMaterial = gPhysics->createMaterial(0.5f, 0.5f, 0.6f); //Crear material del suelo
+	//gMaterial = gPhysics->createMaterial(0.5f, 0.5f, 0.6f); //Crear material del suelo
+	gMaterial = gPhysics->createMaterial(0.9f, 0.5f, 0.999f);
 
 	// For Solid Rigids +++++++++++++++++++++++++++++++++++++
 	PxSceneDesc sceneDesc(gPhysics->getTolerancesScale());
@@ -103,6 +104,7 @@ void cleanupPhysics(bool interactive)
 	gScene->release();
 	gDispatcher->release();
 	// -----------------------------------------------------
+	delete worldManager;
 	gPhysics->release();	
 	PxPvdTransport* transport = gPvd->getTransport();
 	gPvd->release();
@@ -119,7 +121,7 @@ void cleanupPhysics(bool interactive)
 		}
 	}
 	delete particleSystem;
-	delete worldManager;
+	
 }
 
 // Function called when a key is pressed

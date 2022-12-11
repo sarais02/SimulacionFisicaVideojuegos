@@ -177,8 +177,9 @@ Camera* GetCamera()
 	return sCamera;
 }
 
-PxShape* CreateShape(const PxGeometry& geo)
+PxShape* CreateShape(const PxGeometry& geo, const PxMaterial* mat)
 {
+	if (mat == nullptr) mat = gMaterial;
 	PxShape* shape = gPhysics->createShape(geo, *gMaterial);
 	return shape;
 }
