@@ -16,7 +16,7 @@ GausianParticleGen::GausianParticleGen(Vector3 desTip_vel_, Vector3 desTip_pos_,
 
  void GausianParticleGen::generateParticle(list<Particle*>& l) {
 	
-	 for (int i = 0; i < nParticles; i++)
+	 for (int i = 0; i < nParticles && active; i++)
 	 {
 		 auto posi = Vector3(desTip_pos.x * d(gnd), desTip_pos.y * d(gnd), desTip_pos.z * d(gnd));
 		 auto v = Vector3(desTip_vel.x * d(gnd), desTip_vel.y * d(gnd), desTip_vel.z * d(gnd));
@@ -31,12 +31,15 @@ GausianParticleGen::GausianParticleGen(Vector3 desTip_vel_, Vector3 desTip_pos_,
 		 auto p = molde->clone();
 		 p->setMass(molde->getMass());
 		 p->setIsFire(molde->isFire());
+		 p->setIsWater(molde->isWater());
 		 p->setTimeAlive(molde->getIniTimeAlive() + (desTip_t * d(gnd)));
 		 p->setVelocity(velFinal);
 		 p->setPosition(posFinal);
 		 for (int i = 0; i < molde->forcesNames.size(); i++)
 		 {
 			 pfr->addRegistry(pfr->getForceGen(molde->forcesNames[i]), p);
+			 if (name == "FlamesSystem" && pfr->getForceGen(molde->forcesNames[i])->isOver())
+				 active = false;
 		 }
 		 l.push_back(p);
 	 }

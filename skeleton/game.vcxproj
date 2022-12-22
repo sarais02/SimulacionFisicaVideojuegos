@@ -286,6 +286,7 @@
     <ClInclude Include="BuoyancyForceGenerator.h" />
     <ClInclude Include="callbacks.hpp" />
     <ClInclude Include="CircleGenerator.h" />
+    <ClInclude Include="ColorHSV.h" />
     <ClInclude Include="core.hpp" />
     <ClInclude Include="ElasticBandForceGen.h" />
     <ClInclude Include="ExplosionForceGenerator.h" />

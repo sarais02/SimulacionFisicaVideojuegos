@@ -76,8 +76,8 @@ public:
 		return iniTimeAlive;
 	}
 	inline bool isAlive(double t) {
-		timeAlive -= t;
-		return timeAlive > 0;
+		if(timeAlive!=-1) timeAlive -= t;
+		return timeAlive == -1 || timeAlive > 0;
 	};
 	inline void setColor(Vector4 c) {
 		color = c;
@@ -97,6 +97,12 @@ public:
 	inline void setIsFire(bool f) {
 		isFire_ = f;
 	}
+	inline bool isWater() {
+		return is_water;
+	}
+	inline void setIsWater(bool f) {
+		is_water = f;
+	}
 	inline double getInverseMass() {
 		return inverse_mass;
 	}
@@ -108,17 +114,12 @@ public:
 	}
 protected:
 
-	Vector3 vel, a;
-	Vector3 force;
+	Vector3 vel, a, force;
 	Vector4 color;
 	physx::PxTransform pos;
-	//unique_ptr<RenderItem>renderitem;
 	RenderItem *renderitem;
-	double damping;
-	double mass;
-	double inverse_mass;
 	type type_;
+	double damping, mass, inverse_mass, size_;
 	double timeAlive, iniTimeAlive;
-	double size_;
-	bool isFire_;
+	bool isFire_, is_water;
 };

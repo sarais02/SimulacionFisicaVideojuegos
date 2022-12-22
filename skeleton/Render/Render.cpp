@@ -261,7 +261,7 @@ void setupDefaultWindow(const char *name)
 void setupDefaultRenderState()
 {
 	// Setup default render states
-	glClearColor(0, 0, 0, 1.0);
+	glClearColor(69.0/255, 155.0 / 255, 167.0 / 255, 1.0);
 	glEnable(GL_DEPTH_TEST);
 	glEnable(GL_COLOR_MATERIAL);
 	//glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
@@ -270,10 +270,10 @@ void setupDefaultRenderState()
 
 	// Setup lighting
 	glEnable(GL_LIGHTING);
-	PxReal ambientColor[]	= { 0.0f, 0.1f, 0.2f, 0.0f };
-	PxReal diffuseColor[]	= { 1.0f, 1.0f, 1.0f, 0.0f };		
-	PxReal specularColor[]	= { 0.0f, 0.0f, 0.0f, 0.0f };		
-	PxReal position[]		= { 100.0f, 100.0f, 400.0f, 1.0f };		
+	PxReal ambientColor[]	= { 0.5f, 0.5f, 0.5f, 1.0f };
+	PxReal diffuseColor[]	= { 1.0f, 1.0f, 1.0f, 1.0f };		
+	PxReal specularColor[]	= { 0.5f, 0.5f, 0.5f, 1.0f };		
+	PxReal position[]		= { 0.0f, 200.0f, 100.0f, 0.0f };		
 	glLightfv(GL_LIGHT0, GL_AMBIENT, ambientColor);
 	glLightfv(GL_LIGHT0, GL_DIFFUSE, diffuseColor);
 	glLightfv(GL_LIGHT0, GL_SPECULAR, specularColor);

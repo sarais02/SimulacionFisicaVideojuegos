@@ -49,7 +49,7 @@ void GaussianSolidRigidGen::generateSolidRigid(list<SolidRigid*>& l) {
 		if (type == DYNAMIC) {
 			velFinal = Vector3(di->getLinearVelocity().x + v.x, di->getLinearVelocity().y + v.y, di->getLinearVelocity().z + v.z);
 			auto aux = static_cast<PxRigidDynamic*>(nueva->solidType);
-			aux->setMass(di->getMass() + abs(d(gnd) * mass));
+			//aux->setMass(di->getMass() + abs(d(gnd) * mass));
 			aux->setLinearVelocity(velFinal);
 		}
 

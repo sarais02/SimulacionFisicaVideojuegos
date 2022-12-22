@@ -10,10 +10,12 @@ WindGenerator::WindGenerator(const float k1, const float k2, Vector3 v, float ra
 
 void WindGenerator::updateForce(Particle* p, double duration)
 {
-	if (fabs(p->getInverseMass()) < 1e-10 || !isActive() || !inRange(p->getPosition()) ||  !canUpdateForce(duration)) return;
+	if (fabs(p->getInverseMass()) < 1e-10 || !inRange(p->getPosition()) ||  !canUpdateForce(duration)) return;
 
 	Vector3 v = p->getVelocity()-vel;
-	p->addForce(calculateDrag(v));
+	Vector3 f = calculateDrag(v);
+	if (f.x < (vel.x-1) && p->isFire()) over = true;
+	p->addForce(f);
 }
 
 void WindGenerator::updateForce(PxRigidDynamic* p, double duration)
@@ -21,10 +23,8 @@ void WindGenerator::updateForce(PxRigidDynamic* p, double duration)
 	if (fabs(p->getInvMass()) < 1e-10 || !isActive() || !inRange(p->getGlobalPose().p) || !canUpdateForce(duration)) return;
 
 	Vector3 v = p->getLinearVelocity() - vel;
-	cout << "FUERZA PARTICULA X:" << p->getLinearVelocity().x << " y:" << p->getLinearVelocity().y << " z:" << p->getLinearVelocity().z << "\n";
-	Vector3 puta = calculateDrag(v);
-	p->addForce(puta);
-	cout << "FUERZA X:" << puta.x << " y:" << puta.y << " z:" << puta.z << "\n";
+	
+	p->addForce(calculateDrag(v));
 }
 
 bool WindGenerator::inRange(Vector3 pos)

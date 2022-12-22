@@ -11,5 +11,4 @@ public:
 	~CircleGenerator() = default;
 
 	void generateParticle(list<Particle*>& l) override;
-
 };

@@ -45,6 +45,8 @@ public:
 	void				handleMotion(int x, int y);
 	void				handleAnalogMove(float x, float y);
 
+	void setEye(physx::PxVec3 p, float yOffset, float zOffset);
+
 	physx::PxVec3		getEye()	const; //Posicion del Ojo
 	physx::PxVec3		getDir()	const; //Direccion en la que mira
 	physx::PxTransform	getTransform() const;

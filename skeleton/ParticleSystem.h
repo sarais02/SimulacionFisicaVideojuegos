@@ -10,6 +10,7 @@
 #include "SpringForceGenerator.h"
 #include "AnchoredSpringFG.h"
 #include "BuoyancyForceGenerator.h"
+#include "WindGenerator.h"
 
 using namespace std;
 
@@ -19,40 +20,41 @@ public:
 	ParticleSystem();
 	~ParticleSystem();
 	//llama al metodo create del generador de particulas, al integrate de cada particula
-	void update(double t);
+	void update(double t, Vector3 pos);
+	void onParticleDeath(Particle* p);
 
+	//OBTENER GENERADORES
 	shared_ptr<ParticleGenerator> getParticleGen(string name);
 	shared_ptr<ForceGenerator> getForceGen(string name);
+
+	//GENERADORES
 	void generateFireworkSystem();
-	void generateHosepipeSystem();
-	void generateFogSystem();
+	void generateRain();
+	void generateFogSystem(Vector3 pos, string=" ");
 	void generateFlamesSystem();
 	void generateCircleSystem();
-	void generateRocketSystem();
-	void increaseDesTip(Vector3 increase);
-	void shootFirework(Firework::FIREWORK_TYPE type);
-	void onParticleDeath(Particle* p);
 	void generateWhirlSystem();
-	void generateGalaxy();
-	void activeExplosion(bool expl) { explosion->OnActive(expl); };
-	void generateExplosionSystem();
-	void generateSpringDemo();
-	void generateElasticBand();
-	void generateSlinky();
 	void generateBuoyancy();
-	void increaseConst(double i);
-	void increaseVolume(float v);
-	void increaseHeight(float h);
+	void generateFlag(Vector3 pos);
 
+	//NIVEL
+	void shootFirework(Firework::FIREWORK_TYPE type, Vector3 pos);
+	void createWinds();
+	void createWinds2();
+	void resetFire();
+	void clearlevel();
+	void generateForces();
+	inline bool isGameOver() { return gameover; }
 
 protected:
-	Vector3 bounds_max;
-	Vector3 bounds_min;
 	Vector3 gravity;
+
 	list <Particle*> particles_list;
 	list<shared_ptr<ParticleGenerator>>particleGen_list;
 	list<shared_ptr<ForceGenerator>> forceGen_list;
-	ExplosionForceGenerator* explosion;
+
 	ParticleForceRegistry* pfr;
+
 	vector<Firework*> fireworks_pool;
+	bool gameover;
 };

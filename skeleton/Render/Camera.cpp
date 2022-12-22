@@ -78,6 +78,13 @@ void Camera::handleAnalogMove(float x, float y)
 	mEye += viewY*x;
 }
 
+void Camera::setEye(physx::PxVec3 p, float yOffset, float zOffset)
+{
+	mEye = p;
+	//mEye.y -= yOffset;
+	mEye.z += zOffset;
+}
+
 void Camera::handleMotion(int x, int y)
 {
 	int dx = mMouseX - x;

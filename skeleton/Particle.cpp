@@ -1,7 +1,7 @@
 #include "Particle.h"
+#include <iostream>
 
-
-Particle::Particle(Vector3 Pos, Vector3 Vel, Vector4 c, Vector3 a_, double dam, double size, double mass) : vel(Vel), pos(Pos), isFire_(false), force({ 0, 0, 0 }),
+Particle::Particle(Vector3 Pos, Vector3 Vel, Vector4 c, Vector3 a_, double dam, double size, double mass) : vel(Vel), pos(Pos), isFire_(false), force({ 0, 0, 0 }), is_water(false),
 																								color(c), a(a_), damping(dam), size_(size), mass(mass), inverse_mass(1.0/mass)
 {
 	renderitem = new RenderItem(CreateShape(physx::PxSphereGeometry(size_)), &pos, c);
@@ -53,6 +53,7 @@ Particle* Particle::clone() const {
 	//p->setForce(force);
 	p->setTimeAlive(iniTimeAlive);
 	p->setIsFire(isFire_);
+	p->setIsWater(is_water);
 	return p;
 }
 

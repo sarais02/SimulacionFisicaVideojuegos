@@ -1,17 +1,21 @@
 #include "WhirlwindGenerator.h"
 
-WhirlwindGenerator::WhirlwindGenerator(Vector3 v, Vector3 centre, float k, int c): WindGenerator(k, k, v,  0, centre), centre(centre), k(k), c(c)
+WhirlwindGenerator::WhirlwindGenerator(Vector3 v, Vector3 centre, float k, float range, int c): WindGenerator(k, k, v,  0, centre), centre(centre), k(k), c(c)
 {
 	setName("Torbellino");
+	maxPositive = { centre.x + range, centre.y + range, centre.z + range };
+	maxNegative = { centre.x - range, centre.y - range, centre.z - range };
 }
 
 void WhirlwindGenerator::updateForce(Particle* p, double duration)
 {
 	if (fabs(p->getInverseMass()) < t || !isActive()) return;
+	else if (p->isFire() && !inRange(p->getPosition())) return;
 	calculateVelocityWind(p->getPosition());
-	//WindGenerator::updateForce(p, duration);
 	Vector3 v = p->getVelocity() - vel;
-	p->addForce(calculateDrag(v));
+	auto f = calculateDrag(v);
+	if (f.x < (vel.x - 1) && p->isFire()) over = true;
+	p->addForce(f);
 }
 
 void WhirlwindGenerator::updateForce(PxRigidDynamic* p, double duration)

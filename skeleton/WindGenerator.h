@@ -9,11 +9,8 @@ public:
 	void setVelocity(Vector3 v) {
 		v = vel;
 	}
-
 protected:
-	Vector3 vel;
+	Vector3 vel, maxPositive, maxNegative;
 	float rango;
-	Vector3 maxPositive, maxNegative;
-
 	bool inRange(Vector3 pos);
 };

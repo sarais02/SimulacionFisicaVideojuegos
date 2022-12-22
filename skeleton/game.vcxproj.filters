@@ -68,6 +68,7 @@
     <ClInclude Include="SolidRigidGenerator.h" />
     <ClInclude Include="GaussianSolidRigidGen.h" />
     <ClInclude Include="TorqueForce.h" />
+    <ClInclude Include="ColorHSV.h" />
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Render">

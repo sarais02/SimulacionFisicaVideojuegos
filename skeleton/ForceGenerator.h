@@ -24,6 +24,12 @@ public:
 	inline bool isActive() {
 		return active;
 	}
+	inline bool isOver() {
+		return over;
+	}
+	inline void setIsOver(bool o) {
+		over = o;
+	}
 	void resetTimer() {
 		timer = 0.0;
 	}
@@ -35,22 +41,35 @@ public:
 		timeLimit = limit;
 		resetTimer();
 	}
+	void setLoop(bool l) {
+		loop = l;
+	}
 	bool canUpdateForce(double duration) {
-		if (!active) return false;
+		if (loop && !active) { 
+			bool x = timeLimit <= timer + duration;
+			timer += duration;
+			active = x;
+			if (x) {
+				timer = 0;
+			}
+			return x;
+		}
+		else if (!active) return false;
 		else if (timeLimit == -1) return true;
 
 		bool x = timeLimit >= timer + duration;
 		timer += duration;
 		active = x;
-		if (!x)cout << "OFF" << "\n";
+		if (!x) {
+			timer = 0;
+		}
 		return x;
-		return true;
 	}
 
 	
 protected:
 	std::string _name;
 	double t = -1e10;
-	bool active = true;
+	bool active = true, over=false, loop=false;
 	double timer = 0.0, timeLimit=-1;
 };

@@ -18,12 +18,8 @@ class SolidRigidGenerator
 public:
 	typeRigid type;
 	virtual void generateSolidRigid(list<SolidRigid*>& l) = 0;
-	void setName(string n) {
-		name = n;
-	}
-	inline string getName() {
-		return name;
-	}
+	inline void setName(string n) { name = n; }
+	inline string getName() { return name; }
 	inline void  setSolidRigid(SolidRigid* s) {
 		if (molde != nullptr) {
 			DeregisterRenderItem(molde->item);
@@ -32,22 +28,16 @@ public:
 		molde = s;
 	}
 
-	inline bool isActive() {
-		return active;
-	}
-	inline void setActive(bool b) {
-		active = b;
-	}
+	inline bool isActive() { return active; }
+	inline void setActive(bool b) { active = b; }
+
 	inline void changeActive() {
 		active = !active;
 		Vector3 pos = molde->solidType->getGlobalPose().p;
 		if (!active) molde->solidType->setGlobalPose({ pos.x, pos.y + 4000, pos.x });
 		else molde->solidType->setGlobalPose({ pos.x, pos.y - 4000, pos.x });
 	}
-	void setPhysx(PxPhysics* gP) { gPhysics = gP; };
-	void setNParticles(int n) {
-		nParticles = n;
-	}
+	void setNParticles(int n) {nParticles = n;}
 
 	void addParticleForceRegistry(RigidForceRegistry* _pfr) { pfr = _pfr; }
 
@@ -84,7 +74,7 @@ public:
 				new_solid = gPhysics->createRigidDynamic(PxTransform(pos));
 			}
 
-			shape = CreateShape(PxSphereGeometry(/*2.0*/molde->tam));
+			shape = CreateShape(PxSphereGeometry(molde->tam));
 			break;
 
 		case physx::PxGeometryType::eBOX:
@@ -115,14 +105,6 @@ public:
 		gScene->addActor(*new_solid);
 		nuevo->solidType = new_solid;
 
-		//if (di != nullptr) { //Le meto las fuerzas
-		//	auto aux2 = static_cast<PxRigidDynamic*>(nuevo->solidType);
-		//	for (int i = 0; i < molde->forcesNames.size(); i++) {
-		//		nuevo->forcesNames.push_back(molde->forcesNames[i]);
-		//		pfr->addRegistry(pfr->getForceGenenarion(molde->forcesNames[i]), aux2);
-		//	}
-		//}
-
 		return nuevo;
 	};
 
@@ -130,12 +112,11 @@ protected:
 
 	string name;
 	int nParticles = 20;
+	double mass;
+	bool active = false, is_Gaussian = false;
 	SolidRigid* molde = nullptr;
-	bool active = false;
-	bool is_Gaussian = false;
 	RigidForceRegistry* pfr;
 	PxScene* gScene;
 	PxPhysics* gPhysics;
 	WorldManager* worldmanager;
-	double mass;
 };

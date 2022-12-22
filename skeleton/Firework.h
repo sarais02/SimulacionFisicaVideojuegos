@@ -4,6 +4,7 @@
 #include <memory>
 #include "ParticleGenerator.h"
 using namespace std;
+
 class Firework :public Particle{
 	list<shared_ptr<ParticleGenerator>> gens;
 public:	enum FIREWORK_TYPE{BASIC, LINEAR,CIRCULAR};

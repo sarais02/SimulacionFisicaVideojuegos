@@ -3,17 +3,14 @@
 
 class BuoyancyForceGenerator :public ForceGenerator {
 public:
-	BuoyancyForceGenerator(float h, float v, float d);
+	BuoyancyForceGenerator(float h, float v, float d, Vector3 pos = {0,0,0});
 	virtual ~BuoyancyForceGenerator();
 
 	virtual void updateForce(Particle* p, double t);
 	virtual void updateForce(PxRigidDynamic* p, double t);
-	inline void setLiquidParticle(Particle* p) {
-		liquid_particle = p;
-	}
-	inline void increaseVolume(float v) {
-		volume += v;
-	}
+	inline void setLiquidParticle(Particle* p) { liquid_particle = p; }
+	
+	inline void increaseVolume(float v) { volume += v; }
 	virtual void setVolume(float v) {
 		volume = v;
 		if (volume == 0) volume = 0.0;

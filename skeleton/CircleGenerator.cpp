@@ -25,7 +25,6 @@ void CircleGenerator::generateParticle(list<Particle*>& l) {
 		Vector3 posFinal = Vector3(molde->getPosition().x, molde->getPosition().y, molde->getPosition().z);
 		Vector3 velFinal = Vector3(molde->getVelocity().x + v.x, molde->getVelocity().y + v.y, molde->getVelocity().z + v.z);
 		auto p = molde->clone();
-		//auto p = new Particle(posFinal, velFinal, molde->getColor(), molde->getAcceleration(), molde->getDamping(), molde->getSize());
 		p->setPosition(posFinal);
 		p->setVelocity(velFinal);
 		p->setMass(molde->getMass());
